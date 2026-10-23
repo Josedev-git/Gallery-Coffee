@@ -1,1 +1,1 @@
-# Galery-Coffee
+# Gallery-Coffee
