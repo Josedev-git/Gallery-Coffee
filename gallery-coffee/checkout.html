@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Checkout — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261009mobile3">
+  <link rel="icon" href="assets/logo.png">
+</head>
+
+<body>
+  <div class="pagina">
+
+    <header class="topo-pagina">
+      <a href="index.html" class="titulo">
+        <h1>Gallery Coffee</h1>
+      </a>
+
+      <div class="acoes-topo">
+        <a href="produtos.html" class="icone-topo" title="Buscar produtos" aria-label="Buscar produtos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="favoritos.html" class="icone-topo" title="Favoritos" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="contador-icone" id="contador-favoritos"></span>
+        </a>
+        <a href="carrinho.html" class="icone-topo" title="Carrinho" aria-label="Carrinho">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="contador-icone" id="contador-carrinho"></span>
+        </a>
+        <a href="login.html" class="icone-topo" id="link-conta" title="Minha conta" aria-label="Minha conta">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </a>
+        <button class="icone-topo" id="botao-menu" title="Menu" aria-label="Abrir menu" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="menu-lateral" id="menu-lateral">
+      <a href="index.html" class="btn-menu">Início</a>
+      <a href="produtos.html" class="btn-menu">Produtos</a>
+      <a href="colecoes.html" class="btn-menu">Coleções</a>
+      <a href="sobre.html" class="btn-menu">Sobre</a>
+      <a href="favoritos.html" class="btn-menu">Favoritos</a>
+      <a href="carrinho.html" class="btn-menu">Carrinho</a>
+      <a href="perfil.html" class="btn-menu">Minha conta</a>
+      <a href="admin.html" class="btn-menu" id="link-admin" style="display:none">Admin</a>
+      <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
+    </nav>
+
+    <section class="secao">
+      <h2>Checkout</h2>
+
+      <!--
+        As 5 etapas já existem, prontas, aqui no HTML (dentro de cada
+        div "passo-checkout"). O JavaScript só mostra uma de cada vez,
+        trocando a classe "ativo" — ele não cria nada de novo.
+      -->
+      <div class="etapas">
+        <span class="etapa-item etapa-atual" data-etapa="1"><span class="etapa-numero">1</span>Identificação</span>
+        <span class="etapa-item" data-etapa="2"><span class="etapa-numero">2</span>Endereço</span>
+        <span class="etapa-item" data-etapa="3"><span class="etapa-numero">3</span>Entrega</span>
+        <span class="etapa-item" data-etapa="4"><span class="etapa-numero">4</span>Pagamento</span>
+        <span class="etapa-item" data-etapa="5"><span class="etapa-numero">5</span>Revisão</span>
+      </div>
+
+      <div class="caixa caixa-checkout">
+
+        <div class="passo-checkout ativo" id="passo-1">
+          <h3>Identificação</h3>
+          <form class="formulario">
+            <label>Nome completo <input type="text" id="ck-nome" required></label>
+            <label>E-mail <input type="email" id="ck-email" required></label>
+            <label>Telefone <input type="text" id="ck-telefone"></label>
+          </form>
+        </div>
+
+        <div class="passo-checkout" id="passo-2">
+          <h3>Endereço</h3>
+          <form class="formulario">
+            <label>CEP <input type="text" id="ck-cep" required></label>
+            <label>Rua <input type="text" id="ck-rua" required></label>
+            <label>Número <input type="text" id="ck-numero"></label>
+            <label>Bairro <input type="text" id="ck-bairro"></label>
+            <label>Cidade <input type="text" id="ck-cidade" required></label>
+            <label>Estado <input type="text" id="ck-estado"></label>
+          </form>
+        </div>
+
+        <div class="passo-checkout" id="passo-3">
+          <h3>Entrega</h3>
+          <label class="opcao-radio">
+            <input type="radio" name="entrega" value="padrao" checked> Entrega padrão (5 a 8 dias úteis) — Grátis acima de R$ 200
+          </label>
+          <label class="opcao-radio">
+            <input type="radio" name="entrega" value="expressa"> Entrega expressa (1 a 2 dias úteis) — R$ 24,90
+          </label>
+        </div>
+
+        <div class="passo-checkout" id="passo-4">
+          <h3>Pagamento</h3>
+          <label class="opcao-radio">
+            <input type="radio" name="pagamento" value="cartao" checked> Cartão de crédito
+          </label>
+          <label class="opcao-radio">
+            <input type="radio" name="pagamento" value="pix"> Pix
+          </label>
+          <div id="campos-cartao">
+            <form class="formulario">
+              <label>Número do cartão <input type="text" id="ck-numero-cartao"></label>
+              <label>Nome no cartão <input type="text" id="ck-nome-cartao"></label>
+              <label>Validade <input type="text" id="ck-validade" placeholder="MM/AA"></label>
+              <label>CVV <input type="text" id="ck-cvv"></label>
+            </form>
+          </div>
+          <p style="font-size:12px; color:#6E6152;">🛡 Simulação de checkout — nenhum dado de cartão é armazenado de verdade.</p>
+        </div>
+
+        <div class="passo-checkout" id="passo-5">
+          <h3>Revisão do pedido</h3>
+          <div id="resumo-revisao"></div>
+          <p style="font-weight:bold; font-size:18px; margin-top:10px;">Total: <span id="revisao-total"></span></p>
+        </div>
+
+        <p id="erro-checkout" class="mensagem-erro"></p>
+
+        <div class="checkout-acoes">
+          <button id="botao-voltar-etapa" class="botao botao-secundario">Voltar</button>
+          <button id="botao-avancar-etapa" class="botao">Avançar</button>
+          <button id="botao-finalizar-pedido" class="botao" style="display:none;">Finalizar pedido</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="rodape">
+      <hr>
+      <p>Gallery Coffee — projeto de estudo (front-end)</p>
+    </footer>
+
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+
+</html>

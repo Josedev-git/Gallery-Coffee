@@ -1,0 +1,1017 @@
+/* ============================================================
+   GALLERY COFFEE — css/style.css
+   Design "galeria de arte / museu", igual ao da versão em React.
+   ------------------------------------------------------------
+   PALETA DE CORES
+   Papel (fundo)      #F4EEE0   --bg
+   Papel claro        #FBF7EC   --bg-elevada
+   Tinta (texto)      #2B2015   --tinta
+   Texto suave        #6E6152   --texto-suave
+   Dourado            #C9A227   --dourado
+   Dourado escuro     #9C7A1B   --dourado-escuro
+   Verde galeria      #1F3D2B   --verde
+   Vinho              #8C3A3A   --vinho
+   Borda              #DCD0B4   --borda
+
+   TIPOGRAFIA
+   Playfair Display -> títulos
+   EB Garamond      -> texto corrido, botões, menu
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --bg: #F4EEE0;
+  --bg-elevada: #FBF7EC;
+  --tinta: #2B2015;
+  --texto-suave: #6E6152;
+  --dourado: #C9A227;
+  --dourado-escuro: #9C7A1B;
+  --verde: #1F3D2B;
+  --vinho: #8C3A3A;
+  --borda: #DCD0B4;
+  --fonte-titulo: 'Playfair Display', serif;
+  --fonte-texto: 'EB Garamond', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  font-family: var(--fonte-texto);
+  color: var(--tinta);
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+::selection {
+  background-color: var(--dourado);
+  color: #ffffff;
+}
+
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  color: var(--tinta);
+  line-height: 1.2;
+  margin: 0;
+}
+
+h1 { font-size: 32px; }
+h2 { font-size: 26px; }
+h3 { font-size: 17px; }
+
+a {
+  color: inherit;
+}
+
+.pagina {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* ---------- topo / cabeçalho ---------- */
+.topo-pagina {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.titulo img {
+  width: 42px;
+}
+
+.titulo h1 {
+  color: var(--vinho);
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: 0.02em;
+  font-family: var(--fonte-titulo);
+}
+
+/* ---------- ícones do topo (busca, favoritos, carrinho, conta, menu) ---------- */
+.acoes-topo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.icone-topo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tinta);
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.icone-topo:hover {
+  color: var(--dourado-escuro);
+}
+
+.contador-icone {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background-color: var(--vinho);
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  font-family: var(--fonte-texto);
+}
+
+.contador-icone:empty {
+  display: none;
+}
+
+/* ---------- menu escondido, revelado pelo ícone de hambúrguer ---------- */
+.menu-lateral {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0 20px;
+  margin-top: 18px;
+  border-top: 1px solid var(--borda);
+  border-bottom: 1px solid var(--borda);
+}
+
+.menu-lateral.aberto {
+  display: flex;
+}
+
+.menu-lateral .btn-menu {
+  border: none;
+  text-align: left;
+  padding: 10px 4px;
+  border-radius: 0;
+}
+
+.menu-lateral .btn-menu:hover {
+  background-color: transparent;
+  color: var(--dourado-escuro);
+}
+
+.subtitulo {
+  margin: 4px 0 0 0;
+  font-style: italic;
+  color: var(--dourado-escuro);
+  font-size: 15px;
+}
+
+/* ---------- menu ---------- */
+.menu {
+  display: flex;
+  gap: 10px;
+  margin: 22px 0;
+  flex-wrap: wrap;
+}
+
+.btn-menu {
+  border: 1px solid var(--dourado);
+  border-radius: 2px;
+  padding: 8px 18px;
+  text-decoration: none;
+  color: var(--tinta);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--fonte-texto);
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.btn-menu:hover {
+  background-color: var(--dourado);
+  color: #ffffff;
+}
+
+.botao-filtro.ativo {
+  background-color: var(--dourado);
+  color: #ffffff;
+}
+
+/* ---------- seções ---------- */
+.secao {
+  margin-top: 44px;
+}
+
+.secao h2 {
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 26px;
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+.secao h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 46px;
+  height: 2px;
+  background-color: var(--dourado);
+}
+
+.destaque {
+  background-color: var(--verde);
+  color: #EFE7D6;
+  padding: 34px 28px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.destaque p {
+  color: #EFE7D6;
+  max-width: 620px;
+  margin: 14px auto 0;
+  line-height: 1.7;
+}
+
+/* ---------- hero (imagem + texto de destaque) ---------- */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-top: 8px;
+}
+
+.hero-texto {
+  flex: 1;
+}
+
+.hero-texto h2 {
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  border: none;
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.hero-texto h2::after {
+  display: none;
+}
+
+.hero-texto p {
+  line-height: 1.75;
+  color: var(--texto-suave);
+}
+
+.hero-imagem {
+  position: relative;
+  flex-shrink: 0;
+  padding: 10px;
+  border: 2px solid var(--dourado);
+}
+
+.hero-imagem::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--dourado);
+  pointer-events: none;
+}
+
+.hero-imagem img {
+  width: 280px;
+  display: block;
+  position: relative;
+}
+
+/* ---------- grade de coleções / produtos ---------- */
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 26px;
+}
+
+.cartao {
+  background-color: var(--bg-elevada);
+  border: 1px solid var(--borda);
+  text-align: center;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.cartao:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(43, 32, 21, 0.12);
+}
+
+.cartao a {
+  text-decoration: none;
+  color: var(--tinta);
+  display: block;
+}
+
+/* moldura dourada em volta da imagem, só com CSS (sem mudar o HTML) */
+.cartao img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  padding: 8px;
+  border: 2px solid var(--dourado);
+  outline: 1px solid var(--dourado);
+  outline-offset: -6px;
+  background-color: var(--bg-elevada);
+  box-sizing: border-box;
+}
+
+.cartao .info {
+  padding: 14px 12px 6px;
+}
+
+.cartao .info h3 {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+}
+
+.cartao .info p {
+  color: var(--texto-suave);
+  font-size: 14px;
+  margin: 0;
+}
+
+.cartao .preco {
+  color: var(--dourado-escuro);
+  font-weight: 600;
+  font-family: var(--fonte-texto);
+}
+
+.cartao .btn-adicionar,
+.cartao .btn-favoritar,
+.cartao .botao {
+  width: calc(100% - 24px);
+  margin: 0 12px 12px 12px;
+}
+
+/* rótulo estilo "categoria" (usado em cima do nome, quando existir) */
+.rotulo-colecao {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--dourado-escuro);
+}
+
+/* ---------- tabela (ficha técnica / carrinho / admin) ---------- */
+.tabela {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 18px 0;
+  font-size: 15px;
+}
+
+.tabela td, .tabela th {
+  border: 1px solid var(--borda);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.tabela th {
+  background-color: var(--bg-elevada);
+  font-family: var(--fonte-texto);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+}
+
+/* ---------- formulários (login / cadastro / checkout) ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 360px;
+}
+
+.formulario label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--texto-suave);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 0;
+  font-family: var(--fonte-texto);
+  font-size: 15px;
+  color: var(--tinta);
+  background-color: var(--bg-elevada);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  outline: none;
+  border-color: var(--dourado);
+}
+
+.botao {
+  background-color: var(--tinta);
+  color: #ffffff;
+  border: 1px solid var(--tinta);
+  padding: 11px 22px;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: var(--fonte-texto);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.botao:hover {
+  background-color: var(--dourado);
+  border-color: var(--dourado);
+}
+
+/* ---------- mensagens de aviso ---------- */
+.mensagem-erro {
+  color: var(--vinho);
+  font-size: 14px;
+}
+
+.mensagem-sucesso {
+  color: var(--verde);
+  font-size: 14px;
+}
+
+/* ---------- abas (perfil e admin) ---------- */
+.abas {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--borda);
+  margin-bottom: 24px;
+}
+
+.botao-aba {
+  background: none;
+  border: none;
+  padding: 12px 18px;
+  font-family: var(--fonte-texto);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  color: var(--texto-suave);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.botao-aba.ativa {
+  color: var(--dourado-escuro);
+  border-bottom: 2px solid var(--dourado);
+}
+
+.conteudo-aba {
+  display: none;
+}
+
+.conteudo-aba.ativa {
+  display: block;
+}
+
+/* ---------- etapas do checkout ---------- */
+.etapas {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+  font-size: 13px;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.etapa-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.etapas .etapa-numero {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--borda);
+  color: var(--tinta);
+  text-align: center;
+  line-height: 22px;
+  font-size: 12px;
+  margin-right: 6px;
+  font-family: var(--fonte-texto);
+}
+
+.etapas .etapa-atual .etapa-numero {
+  background-color: var(--dourado);
+  color: #ffffff;
+}
+
+.etapas .etapa-atual {
+  color: var(--tinta);
+  font-weight: 600;
+}
+
+.passo-checkout {
+  display: none;
+}
+
+.passo-checkout.ativo {
+  display: block;
+}
+
+/* ---------- caixas (resumo, perfil, cupom) ---------- */
+.caixa {
+  border: 1px solid var(--borda);
+  padding: 20px;
+  background-color: var(--bg-elevada);
+}
+
+/* ---------- painel administrativo ---------- */
+.estatisticas {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.estatistica {
+  border: 1px solid var(--borda);
+  padding: 18px 14px;
+  text-align: center;
+  background-color: var(--bg-elevada);
+}
+
+.estatistica .valor {
+  font-size: 24px;
+  color: var(--dourado-escuro);
+  font-weight: 600;
+  font-family: var(--fonte-titulo);
+}
+
+.estatistica .rotulo {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto-suave);
+  margin-top: 4px;
+}
+
+/* ---------- caixa flutuante (modal) ---------- */
+.caixa-flutuante-fundo {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(43, 32, 21, 0.62);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.caixa-flutuante-fundo.aberta {
+  display: flex;
+}
+
+.caixa-flutuante {
+  background-color: var(--bg-elevada);
+  border: 1px solid var(--dourado);
+  padding: 26px;
+  max-width: 440px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* ---------- lista simples (revisão de pedido, etc.) ---------- */
+.lista-simples {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lista-simples li {
+  border-bottom: 1px solid var(--borda);
+  padding: 10px 0;
+}
+
+/* ---------- rodapé ---------- */
+.rodape {
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-suave);
+  margin-top: 60px;
+}
+
+.rodape hr {
+  border: 0;
+  border-top: 1px solid var(--borda);
+  margin-bottom: 16px;
+}
+
+/* Banner visual das coleções */
+.secao-produtos-colecao {
+  overflow: hidden;
+}
+
+.banner-colecao {
+  width: 100%;
+  height: 190px;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #eee5d2;
+}
+
+.banner-colecao img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* ============================================================
+   COMPONENTES COM LAYOUT PRÓPRIO (desktop + base do mobile)
+   ============================================================ */
+html { -webkit-text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+img, video, svg, canvas { max-width: 100%; }
+input, select, textarea, button { max-width: 100%; font-family: inherit; }
+
+/* botões da página inicial */
+.hero-texto { min-width: 0; }
+.hero-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.hero-acoes .btn-menu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.25;
+}
+
+/* botões empilhados dentro do texto do produto */
+.hero-texto > .botao { margin: 0 8px 8px 0; }
+
+/* campo de busca */
+.campo-busca {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  background-color: var(--bg-elevada);
+  color: var(--tinta);
+  font-size: 16px;
+}
+
+/* ---------- carrinho ---------- */
+.qtd-controle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.qtd-controle .botao {
+  min-width: 34px;
+  padding: 6px 10px;
+  line-height: 1;
+}
+.caixa-resumo {
+  max-width: 360px;
+  margin-top: 20px;
+}
+.caixa-resumo .rotulo-cupom {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.cupom-linha {
+  display: flex;
+  gap: 8px;
+}
+.cupom-linha input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--borda);
+  background-color: var(--bg-elevada);
+  color: var(--tinta);
+  text-transform: uppercase;
+  font-size: 16px;
+}
+.cupom-linha .botao { flex: 0 0 auto; }
+#mensagem-cupom { font-size: 13px; margin: 8px 0 0; }
+.caixa-resumo hr {
+  border: 0;
+  border-top: 1px solid var(--borda);
+  margin: 12px 0;
+}
+.linha-valor {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+}
+.linha-valor.total { font-weight: 700; font-size: 18px; }
+.linha-valor.desconto { color: var(--verde); }
+.botao-bloco {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* ---------- checkout ---------- */
+.caixa-checkout { max-width: 480px; }
+.caixa-checkout .formulario { max-width: none; }
+.opcao-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.opcao-radio input { margin-top: 4px; flex: 0 0 auto; }
+.checkout-acoes {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+.botao-secundario { background-color: var(--texto-suave); border-color: var(--texto-suave); }
+
+/* ---------- admin ---------- */
+.form-linha {
+  flex-direction: row;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  max-width: none;
+}
+.form-linha input { text-transform: uppercase; }
+.linha-botoes { display: flex; gap: 8px; }
+.item-cupom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.pedido-admin { margin-bottom: 12px; }
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+
+/* tablet */
+@media (max-width: 900px) {
+  .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .estatisticas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* celular */
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+
+  .pagina {
+    padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right))
+             max(16px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  }
+
+  /* cabeçalho */
+  .topo-pagina { gap: 10px; padding-bottom: 14px; }
+  .titulo { min-width: 0; gap: 8px; }
+  .titulo h1 { font-size: clamp(17px, 5vw, 21px); line-height: 1.15; }
+  .acoes-topo { gap: 8px; flex-shrink: 0; }
+  .icone-topo { min-width: 36px; min-height: 40px; }
+  .contador-icone { right: -4px; }
+
+  /* menu hambúrguer: itens com área de toque grande */
+  .menu-lateral .btn-menu { padding: 13px 4px; font-size: 14px; }
+
+  /* títulos e seções */
+  .secao { margin-top: 30px; }
+  .secao h2 { font-size: clamp(21px, 5.5vw, 26px); margin-bottom: 18px; }
+
+  /* hero: texto em cima, imagem embaixo, botões lado a lado */
+  .hero { flex-direction: column; align-items: stretch; gap: 22px; }
+  .hero-texto h2 { font-size: clamp(24px, 6.5vw, 30px); }
+  .hero-texto p { line-height: 1.6; }
+  .hero-imagem { align-self: center; width: 100%; max-width: 340px; padding: 8px; }
+  .hero-imagem img { width: 100%; height: auto; }
+
+  .hero-acoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .hero-acoes .btn-menu {
+    width: 100%;
+    min-height: 50px;
+    padding: 8px 6px;
+    font-size: 12px;
+    letter-spacing: .03em;
+    white-space: normal;
+  }
+
+  /* botões do produto ocupam a largura toda */
+  .hero-texto > .botao { display: block; width: 100%; margin: 0 0 8px; }
+
+  /* vitrine: 2 colunas */
+  .grade { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .cartao { min-width: 0; }
+  .cartao img { height: clamp(130px, 40vw, 220px); padding: 5px; }
+  .cartao .info { padding: 10px 8px 6px; }
+  .cartao .info h3 { font-size: 15px; line-height: 1.25; overflow-wrap: anywhere; }
+  .cartao .info p { font-size: 13px; line-height: 1.35; }
+  .cartao .btn-adicionar,
+  .cartao .btn-favoritar,
+  .cartao .botao {
+    display: block;
+    width: calc(100% - 16px);
+    margin: 0 8px 8px;
+    min-height: 42px;
+    padding: 9px 6px;
+    font-size: 11px;
+    letter-spacing: .03em;
+  }
+
+  /* filtros e busca (produtos) */
+  .campo-busca { max-width: none; }
+  .menu { gap: 8px; margin: 14px 0; }
+  .btn-menu { padding: 10px 12px; font-size: 12px; letter-spacing: .04em; }
+
+  /* formulários: campos 16px evitam o zoom automático do iPhone */
+  .formulario { width: 100%; max-width: 100%; }
+  .formulario input,
+  .formulario select,
+  .formulario textarea {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .botao { min-height: 44px; padding: 11px 16px; }
+  .caixa { padding: 16px; min-width: 0; }
+
+  /* tabela genérica (ficha técnica): continua tabela, mas quebra o texto */
+  .tabela { font-size: 14px; }
+  .tabela td, .tabela th { padding: 9px 10px; overflow-wrap: anywhere; vertical-align: top; }
+  .tabela th { width: 36%; }
+
+  /* tabelas largas do admin rolam só dentro delas */
+  .tabela-rolavel {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabela-rolavel td, .tabela-rolavel th { white-space: nowrap; }
+
+  /* CARRINHO: cada item vira um cartão */
+  .tabela-carrinho,
+  .tabela-carrinho tbody { display: block; width: 100%; }
+  .tabela-carrinho { border: 0; margin: 12px 0; }
+  .tabela-carrinho thead { display: none; }
+  .tabela-carrinho tbody { display: grid; gap: 12px; }
+  .tabela-carrinho tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 12px;
+    padding: 14px;
+    border: 1px solid var(--borda);
+    background-color: var(--bg-elevada);
+  }
+  .tabela-carrinho tbody td {
+    display: block;
+    border: 0;
+    padding: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .tabela-carrinho td[data-label="Produto"] {
+    grid-column: 1 / -1;
+    font-family: var(--fonte-titulo);
+    font-size: 17px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--borda);
+  }
+  .tabela-carrinho td[data-label="Quantidade"] { grid-column: 1; }
+  .tabela-carrinho td[data-label="Subtotal"] {
+    grid-column: 2;
+    text-align: right;
+    font-weight: 600;
+    color: var(--dourado-escuro);
+  }
+  .tabela-carrinho td[data-label="Remover"] {
+    grid-column: 1 / -1;
+    text-align: right;
+  }
+  .tabela-carrinho td[data-label="Remover"] .botao {
+    width: 100%;
+    background-color: transparent;
+    color: var(--vinho);
+    border-color: var(--vinho);
+  }
+  .tabela-carrinho td[colspan] { grid-column: 1 / -1; text-align: center; }
+  .tabela-carrinho .qtd-controle .botao { min-width: 40px; min-height: 40px; }
+
+  .caixa-resumo { max-width: none; width: 100%; }
+
+  /* checkout */
+  .etapas { gap: 4px; font-size: 11px; }
+  .etapa-item { padding: 4px 5px; }
+  .caixa-checkout { max-width: none; }
+  .checkout-acoes .botao { flex: 1 1 0; }
+
+  /* abas (perfil/admin) rolam na horizontal em vez de quebrar */
+  .abas { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .botao-aba { flex: 0 0 auto; padding: 12px 14px; white-space: nowrap; }
+
+  /* admin */
+  .estatisticas { gap: 10px; }
+  .estatistica { padding: 14px 8px; min-width: 0; }
+  .estatistica .valor { font-size: 21px; overflow-wrap: anywhere; }
+  .estatistica .rotulo { font-size: 11px; letter-spacing: .04em; }
+  .form-linha { flex-direction: column; align-items: stretch; }
+  .item-cupom { flex-direction: column; align-items: stretch; }
+  .item-cupom .botao { width: 100%; margin-top: 6px; }
+
+  /* modal */
+  .caixa-flutuante { width: calc(100% - 24px); padding: 18px; max-height: 90vh; }
+  .linha-botoes .botao { flex: 1; }
+
+  /* banner */
+  .banner-colecao { height: clamp(120px, 38vw, 190px); margin-bottom: 18px; }
+
+  .rodape { margin-top: 36px; padding-bottom: 12px; }
+}
+
+/* celulares estreitos (iPhone SE, Galaxy pequenos) */
+@media (max-width: 380px) {
+  .pagina { padding-left: 10px; padding-right: 10px; }
+  .titulo h1 { font-size: 17px; }
+  .acoes-topo { gap: 4px; }
+  .icone-topo { min-width: 32px; }
+  .hero-acoes .btn-menu { font-size: 11px; padding: 8px 4px; }
+  .grade { gap: 8px; }
+  .cartao img { height: 125px; }
+  .cartao .info h3 { font-size: 14px; }
+  .cartao .btn-adicionar,
+  .cartao .btn-favoritar,
+  .cartao .botao { font-size: 10px; }
+}
+
+/* celulares muito estreitos: vitrine em 1 coluna */
+@media (max-width: 340px) {
+  .grade { grid-template-columns: 1fr; }
+  .estatisticas { grid-template-columns: 1fr; }
+}
+
+.passo-checkout h3 { margin-bottom: 14px; }

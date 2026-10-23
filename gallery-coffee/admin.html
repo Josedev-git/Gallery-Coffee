@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Painel Admin — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261009mobile3">
+  <link rel="icon" href="assets/logo.png">
+</head>
+
+<body>
+  <div class="pagina">
+
+    <header class="topo-pagina">
+      <a href="index.html" class="titulo">
+        <h1>Gallery Coffee</h1>
+      </a>
+
+      <div class="acoes-topo">
+        <a href="produtos.html" class="icone-topo" title="Buscar produtos" aria-label="Buscar produtos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="favoritos.html" class="icone-topo" title="Favoritos" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="contador-icone" id="contador-favoritos"></span>
+        </a>
+        <a href="carrinho.html" class="icone-topo" title="Carrinho" aria-label="Carrinho">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="contador-icone" id="contador-carrinho"></span>
+        </a>
+        <a href="login.html" class="icone-topo" id="link-conta" title="Minha conta" aria-label="Minha conta">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </a>
+        <button class="icone-topo" id="botao-menu" title="Menu" aria-label="Abrir menu" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="menu-lateral" id="menu-lateral">
+      <a href="index.html" class="btn-menu">Início</a>
+      <a href="produtos.html" class="btn-menu">Produtos</a>
+      <a href="colecoes.html" class="btn-menu">Coleções</a>
+      <a href="sobre.html" class="btn-menu">Sobre</a>
+      <a href="favoritos.html" class="btn-menu">Favoritos</a>
+      <a href="carrinho.html" class="btn-menu">Carrinho</a>
+      <a href="perfil.html" class="btn-menu">Minha conta</a>
+      <a href="admin.html" class="btn-menu" id="link-admin" style="display:none">Admin</a>
+      <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
+    </nav>
+
+    <section class="secao" id="area-restrita" style="display:none;">
+      <p>Esta área é restrita a administradores. <a href="login.html">Entrar</a></p>
+    </section>
+
+    <section class="secao" id="area-admin" style="display:none;">
+      <h2>Painel administrativo</h2>
+
+      <div class="abas">
+        <button class="botao-aba ativa" data-aba="dashboard">Dashboard</button>
+        <button class="botao-aba" data-aba="produtos">Produtos</button>
+        <button class="botao-aba" data-aba="pedidos">Pedidos</button>
+        <button class="botao-aba" data-aba="clientes">Clientes</button>
+        <button class="botao-aba" data-aba="cupons">Cupons</button>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="conteudo-aba ativa" id="aba-dashboard">
+        <div class="estatisticas">
+          <div class="estatistica">
+            <div class="valor" id="dash-vendas">R$ 0,00</div>
+            <div class="rotulo">Vendas totais</div>
+          </div>
+          <div class="estatistica">
+            <div class="valor" id="dash-pedidos">0</div>
+            <div class="rotulo">Pedidos</div>
+          </div>
+          <div class="estatistica">
+            <div class="valor" id="dash-vendidos">0</div>
+            <div class="rotulo">Produtos vendidos</div>
+          </div>
+          <div class="estatistica">
+            <div class="valor" id="dash-estoque-baixo">0</div>
+            <div class="rotulo">Estoque baixo</div>
+          </div>
+        </div>
+        <h3>Estoque baixo</h3>
+        <div id="lista-estoque-baixo"></div>
+      </div>
+
+      <!-- PRODUTOS -->
+      <div class="conteudo-aba" id="aba-produtos">
+        <button class="botao" id="botao-novo-produto">+ Novo produto</button>
+        <table class="tabela tabela-rolavel" style="margin-top:12px;">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Preço</th>
+              <th>Estoque</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="corpo-produtos-admin"></tbody>
+        </table>
+      </div>
+
+      <!-- PEDIDOS -->
+      <div class="conteudo-aba" id="aba-pedidos">
+        <div id="lista-pedidos-admin"></div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="conteudo-aba" id="aba-clientes">
+        <table class="tabela tabela-rolavel">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Pedidos</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-clientes-admin"></tbody>
+        </table>
+      </div>
+
+      <!-- CUPONS -->
+      <div class="conteudo-aba" id="aba-cupons">
+        <form class="formulario form-linha" id="form-novo-cupom">
+          <label>Código <input type="text" id="cupom-codigo" required></label>
+          <label>Desconto (%) <input type="number" id="cupom-desconto" required></label>
+          <button type="submit" class="botao">Criar cupom</button>
+        </form>
+        <div id="lista-cupons-admin" style="margin-top:16px;"></div>
+      </div>
+
+    </section>
+
+    <!-- Caixa flutuante (modal) para criar/editar produto -->
+    <div class="caixa-flutuante-fundo" id="modal-produto">
+      <div class="caixa-flutuante">
+        <h3 id="modal-produto-titulo">Novo produto</h3>
+        <form class="formulario" id="form-produto-admin">
+          <input type="hidden" id="produto-admin-id">
+          <label>Nome <input type="text" id="produto-admin-nome" required></label>
+          <label>Coleção
+            <select id="produto-admin-colecao">
+              <option value="monafe">Monafé</option>
+              <option value="van">Van Coffee</option>
+              <option value="frida">Fridachinoo</option>
+            </select>
+          </label>
+          <label>Preço (R$) <input type="number" step="0.01" id="produto-admin-preco" required></label>
+          <label>Preço antigo (opcional) <input type="number" step="0.01" id="produto-admin-preco-antigo"></label>
+          <label>Capacidade <input type="text" id="produto-admin-capacidade"></label>
+          <label>Estoque <input type="number" id="produto-admin-estoque" required></label>
+          <label>Material <input type="text" id="produto-admin-material"></label>
+          <label>Dimensões <input type="text" id="produto-admin-dimensoes"></label>
+          <label>Conservação <input type="text" id="produto-admin-cuidados"></label>
+          <label>Descrição <textarea id="produto-admin-descricao" rows="3"></textarea></label>
+          <div class="linha-botoes">
+            <button type="submit" class="botao">Salvar</button>
+            <button type="button" class="botao botao-secundario" id="botao-cancelar-produto">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="rodape">
+      <hr>
+      <p>Gallery Coffee — projeto de estudo (front-end)</p>
+    </footer>
+
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+
+</html>

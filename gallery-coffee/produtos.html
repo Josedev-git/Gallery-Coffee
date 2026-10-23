@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Produtos — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261009mobile3">
+  <link rel="icon" href="assets/logo.png">
+</head>
+
+<body>
+  <div class="pagina">
+
+    <header class="topo-pagina">
+      <a href="index.html" class="titulo">
+        <h1>Gallery Coffee</h1>
+      </a>
+
+      <div class="acoes-topo">
+        <a href="produtos.html" class="icone-topo" title="Buscar produtos" aria-label="Buscar produtos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="favoritos.html" class="icone-topo" title="Favoritos" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="contador-icone" id="contador-favoritos"></span>
+        </a>
+        <a href="carrinho.html" class="icone-topo" title="Carrinho" aria-label="Carrinho">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="contador-icone" id="contador-carrinho"></span>
+        </a>
+        <a href="login.html" class="icone-topo" id="link-conta" title="Minha conta" aria-label="Minha conta">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </a>
+        <button class="icone-topo" id="botao-menu" title="Menu" aria-label="Abrir menu" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="menu-lateral" id="menu-lateral">
+      <a href="index.html" class="btn-menu">Início</a>
+      <a href="produtos.html" class="btn-menu">Produtos</a>
+      <a href="colecoes.html" class="btn-menu">Coleções</a>
+      <a href="sobre.html" class="btn-menu">Sobre</a>
+      <a href="favoritos.html" class="btn-menu">Favoritos</a>
+      <a href="carrinho.html" class="btn-menu">Carrinho</a>
+      <a href="perfil.html" class="btn-menu">Minha conta</a>
+      <a href="admin.html" class="btn-menu" id="link-admin" style="display:none">Admin</a>
+      <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
+    </nav>
+
+    <section class="secao">
+      <h2>Todos os produtos</h2>
+
+      <!-- campo de busca: o JS só mostra/esconde os cartões que já existem no HTML -->
+      <input
+        type="text"
+        id="campo-busca"
+        placeholder="Buscar por nome..."
+        class="campo-busca">
+
+      <!-- filtro por coleção -->
+      <div class="menu" style="margin-top:0">
+        <button class="btn-menu botao-filtro ativo" data-colecao="todas">Todas</button>
+        <button class="btn-menu botao-filtro" data-colecao="monafe">Monafé</button>
+        <button class="btn-menu botao-filtro" data-colecao="van">Van Coffee</button>
+        <button class="btn-menu botao-filtro" data-colecao="frida">Fridachinoo</button>
+        <button class="btn-menu botao-filtro" data-colecao="adam">Adam Coffee</button>
+        <button class="btn-menu botao-filtro" data-colecao="munche">Munché</button>
+        <button class="btn-menu botao-filtro" data-colecao="monete">Moneté</button>
+        <button class="btn-menu botao-filtro" data-colecao="athena">Athenachino</button>
+      </div>
+
+      <p id="mensagem-vazio" style="display:none; color:#6E6152;">Nenhum produto encontrado.</p>
+
+      <div class="grade">
+
+        <div class="cartao produto-item" data-colecao="monafe" data-nome="monafé">
+          <a href="produto.html?id=pr1">
+            <img src="assets/monafe.jpg" alt="Monafé">
+            <div class="info">
+              <h3>Monafé</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr1" data-nome="Monafé" data-preco="99.90" data-imagem="assets/monafe.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr1" data-nome="Monafé" data-preco="99.90" data-imagem="assets/monafe.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="van" data-nome="van coffee">
+          <a href="produto.html?id=pr3">
+            <img src="assets/van-coffee.jpg" alt="Van Coffee">
+            <div class="info">
+              <h3>Van Coffee</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr3" data-nome="Van Coffee" data-preco="99.90" data-imagem="assets/van-coffee.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr3" data-nome="Van Coffee" data-preco="99.90" data-imagem="assets/van-coffee.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="frida" data-nome="fridachinoo">
+          <a href="produto.html?id=pr5">
+            <img src="assets/fridachinoo.jpg" alt="Fridachinoo">
+            <div class="info">
+              <h3>Fridachinoo</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr5" data-nome="Fridachinoo" data-preco="99.90" data-imagem="assets/fridachinoo.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr5" data-nome="Fridachinoo" data-preco="99.90" data-imagem="assets/fridachinoo.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="adam" data-nome="adam coffee">
+          <a href="produto.html?id=pr7">
+            <img src="assets/adam-coffee.jpg" alt="Adam Coffee">
+            <div class="info">
+              <h3>Adam Coffee</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr7" data-nome="Adam Coffee" data-preco="99.90" data-imagem="assets/adam-coffee.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr7" data-nome="Adam Coffee" data-preco="99.90" data-imagem="assets/adam-coffee.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="munche" data-nome="munché">
+          <a href="produto.html?id=pr8">
+            <img src="assets/munche.jpg" alt="Munché">
+            <div class="info">
+              <h3>Munché</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr8" data-nome="Munché" data-preco="99.90" data-imagem="assets/munche.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr8" data-nome="Munché" data-preco="99.90" data-imagem="assets/munche.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="monete" data-nome="moneté">
+          <a href="produto.html?id=pr9">
+            <img src="assets/monete.jpg" alt="Moneté">
+            <div class="info">
+              <h3>Moneté</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr9" data-nome="Moneté" data-preco="99.90" data-imagem="assets/monete.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr9" data-nome="Moneté" data-preco="99.90" data-imagem="assets/monete.jpg">♡ Favoritar</button>
+        </div>
+
+        <div class="cartao produto-item" data-colecao="athena" data-nome="athenachino">
+          <a href="produto.html?id=pr10">
+            <img src="assets/athenachino.jpg" alt="Athenachino">
+            <div class="info">
+              <h3>Athenachino</h3>
+              <p class="preco">R$ 99,90</p>
+            </div>
+          </a>
+          <button class="botao btn-adicionar" data-id="pr10" data-nome="Athenachino" data-preco="99.90" data-imagem="assets/athenachino.jpg">Adicionar ao carrinho</button>
+          <button class="botao btn-favoritar" data-id="pr10" data-nome="Athenachino" data-preco="99.90" data-imagem="assets/athenachino.jpg">♡ Favoritar</button>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="rodape">
+      <hr>
+      <p>Gallery Coffee</p>
+    </footer>
+
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/produtos.js"></script>
+</body>
+
+</html>

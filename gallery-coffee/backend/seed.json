@@ -1,0 +1,160 @@
+{
+  "collections": [
+    {
+      "id": "monafe",
+      "name": "Monafé",
+      "artist": "Leonardo da Vinci",
+      "image": "assets/monafe.jpg",
+      "description": "O sorriso mais famoso da arte, agora no seu copo do dia a dia."
+    },
+    {
+      "id": "van",
+      "name": "Van Coffee",
+      "artist": "Vincent van Gogh",
+      "image": "assets/van-coffee.jpg",
+      "description": "Céus em movimento e cores vibrantes em cada gole."
+    },
+    {
+      "id": "frida",
+      "name": "Fridachinoo",
+      "artist": "Frida Kahlo",
+      "image": "assets/fridachinoo.jpg",
+      "description": "Forte como Frida, marcante como arte."
+    },
+    {
+      "id": "adam",
+      "name": "Adam Coffee",
+      "artist": "Michelangelo",
+      "image": "assets/adam-coffee.jpg",
+      "description": "A força e a beleza do Renascimento em cada café."
+    },
+    {
+      "id": "munche",
+      "name": "Munché",
+      "artist": "Edvard Munch",
+      "image": "assets/munche.jpg",
+      "description": "Cores intensas e emoção que não passam despercebidas."
+    },
+    {
+      "id": "monete",
+      "name": "Moneté",
+      "artist": "Claude Monet",
+      "image": "assets/monete.jpg",
+      "description": "Leveza, luz e pinceladas que parecem se mover."
+    },
+    {
+      "id": "athena",
+      "name": "Athenachino",
+      "artist": "Rafael",
+      "image": "assets/athenachino.jpg",
+      "description": "Sabedoria, força e inspiração clássica em um só copo."
+    }
+  ],
+  "products": [
+    {
+      "id": "pr1",
+      "collection_id": "monafe",
+      "name": "Monafé",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 24,
+      "description": "Um retrato do enigmático sorriso da Mona Lisa emoldurado em cerâmica fosca, para transformar cada café em um pequeno momento de contemplação.",
+      "image": "assets/monafe.jpg",
+      "capacity": "400ml",
+      "material": "Cerâmica com acabamento fosco",
+      "dimensions": "8,5 × 8,5 × 11 cm",
+      "care": "Lavar à mão. Não usar em micro-ondas ou lava-louças.",
+      "sold": 214
+    },
+    {
+      "id": "pr3",
+      "collection_id": "van",
+      "name": "Van Coffee",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 31,
+      "description": "O autorretrato de Van Gogh envolto em pinceladas azuis e douradas, sobre um copo térmico que mantém o café quente por até 4 horas.",
+      "image": "assets/van-coffee.jpg",
+      "capacity": "400ml",
+      "material": "Aço inox com pintura térmica",
+      "dimensions": "8 × 8 × 15 cm",
+      "care": "Lavar à mão com pano macio.",
+      "sold": 189
+    },
+    {
+      "id": "pr5",
+      "collection_id": "frida",
+      "name": "Fridachinoo",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 28,
+      "description": "Frida cercada por folhagens, borboletas e seus companheiros animais — uma pequena obra de arte reforçada para o seu dia a dia.",
+      "image": "assets/fridachinoo.jpg",
+      "capacity": "400ml",
+      "material": "Papel biodegradável reforçado",
+      "dimensions": "8 × 8 × 14 cm",
+      "care": "Uso individual recomendado. Não lavável.",
+      "sold": 156
+    },
+    {
+      "id": "pr7",
+      "collection_id": "adam",
+      "name": "Adam Coffee",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 20,
+      "description": "O gesto mais famoso da Capela Sistina, de Michelangelo, estampado em um copo que carrega toda a grandiosidade do Renascimento.",
+      "image": "assets/adam-coffee.jpg",
+      "capacity": "500ml",
+      "material": "Papel biodegradável reforçado",
+      "dimensions": "9 × 9 × 15 cm",
+      "care": "Uso individual recomendado. Não lavável.",
+      "sold": 58
+    },
+    {
+      "id": "pr8",
+      "collection_id": "munche",
+      "name": "Munché",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 22,
+      "description": "As cores intensas de 'O Grito', de Edvard Munch, transformadas em uma peça marcante para o seu dia a dia.",
+      "image": "assets/munche.jpg",
+      "capacity": "400ml",
+      "material": "Papel biodegradável reforçado",
+      "dimensions": "8 × 8 × 14 cm",
+      "care": "Uso individual recomendado. Não lavável.",
+      "sold": 47
+    },
+    {
+      "id": "pr9",
+      "collection_id": "monete",
+      "name": "Moneté",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 19,
+      "description": "Os nenúfares de Claude Monet em tons de azul e verde, trazendo a leveza do impressionismo para o seu café.",
+      "image": "assets/monete.jpg",
+      "capacity": "500ml",
+      "material": "Aço inox com pintura térmica",
+      "dimensions": "8,5 × 8,5 × 16 cm",
+      "care": "Lavar à mão com pano macio.",
+      "sold": 39
+    },
+    {
+      "id": "pr10",
+      "collection_id": "athena",
+      "name": "Athenachino",
+      "price": 99.9,
+      "old_price": null,
+      "stock": 15,
+      "description": "Inspirado n'A Escola de Atenas, de Rafael, um copo que celebra a sabedoria e a harmonia da arte clássica.",
+      "image": "assets/athenachino.jpg",
+      "capacity": "500ml",
+      "material": "Cerâmica com acabamento fosco",
+      "dimensions": "9 × 9 × 13 cm",
+      "care": "Lavar à mão. Não usar em micro-ondas ou lava-louças.",
+      "sold": 31
+    }
+  ]
+}
