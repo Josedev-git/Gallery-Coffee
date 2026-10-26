@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Carrinho — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Produto — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -51,39 +51,73 @@
     </nav>
 
     <section class="secao">
-      <h2>Meu carrinho</h2>
-
-      <table class="tabela tabela-carrinho">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-            <th>Subtotal</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="corpo-carrinho">
-          <tr>
-            <td colspan="4">Carregando...</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="caixa caixa-resumo">
-        <label class="rotulo-cupom" for="campo-cupom">Possui um cupom? <small>(validado no servidor)</small></label>
-        <div class="cupom-linha">
-          <input type="text" id="campo-cupom" placeholder="CÓDIGO" autocomplete="off">
-          <button id="botao-aplicar-cupom" class="botao">Aplicar</button>
+      <!--
+        Essa página é usada para QUALQUER produto. A estrutura (onde fica
+        a imagem, o título, o preço, a tabela) é fixa aqui no HTML.
+        O arquivo js/produto.js só troca o TEXTO de cada parte, de acordo
+        com o produto que foi clicado no catálogo (usando o "?id=" da URL).
+      -->
+      <div class="hero">
+        <div class="hero-imagem">
+          <img id="produto-imagem" src="assets/logo.png" alt="Imagem do produto">
         </div>
-        <p id="mensagem-cupom"></p>
-
-        <hr>
-        <p class="linha-valor"><span>Subtotal</span> <span id="valor-subtotal">R$ 0,00</span></p>
-        <p id="linha-desconto" class="linha-valor desconto" style="display:none;"><span>Desconto</span> <span id="valor-desconto">R$ 0,00</span></p>
-        <p class="linha-valor total"><span>Total</span> <span id="valor-total">R$ 0,00</span></p>
-
-        <a href="checkout.html" id="botao-checkout" class="botao botao-bloco">Continuar para checkout</a>
+        <div class="hero-texto">
+          <p id="produto-erro" role="alert"></p>
+          <h2 id="produto-nome">Carregando produto...</h2>
+          <p class="preco" id="produto-preco" style="font-size:22px">—</p>
+          <p id="produto-descricao">
+            Um retrato do enigmático sorriso da Mona Lisa emoldurado em cerâmica fosca, para
+            transformar cada café em um pequeno momento de contemplação.
+          </p>
+          <button
+            id="botao-adicionar-produto"
+            class="botao btn-adicionar"
+            data-id="pr1"
+            data-nome="Monafé"
+            data-preco="99.90"
+            data-imagem="assets/monafe.jpg">
+            Adicionar ao carrinho
+          </button>
+          <button
+            id="botao-favoritar-produto"
+            class="botao btn-favoritar"
+            data-id="pr1"
+            data-nome="Monafé"
+            data-preco="99.90"
+            data-imagem="assets/monafe.jpg">
+            ♡ Favoritar
+          </button>
+          <button id="botao-comprar-agora" class="botao">Comprar agora</button>
+        </div>
       </div>
+
+      <h2>Ficha técnica</h2>
+      <table class="tabela tabela-ficha">
+        <tr>
+          <th>Coleção</th>
+          <td id="produto-colecao">Monafé</td>
+        </tr>
+        <tr>
+          <th>Capacidade</th>
+          <td id="produto-capacidade">400ml</td>
+        </tr>
+        <tr>
+          <th>Material</th>
+          <td id="produto-material">Cerâmica com acabamento fosco</td>
+        </tr>
+        <tr>
+          <th>Dimensões</th>
+          <td id="produto-dimensoes">8,5 × 8,5 × 11 cm</td>
+        </tr>
+        <tr>
+          <th>Conservação</th>
+          <td id="produto-cuidados">Lavar à mão. Não usar em micro-ondas ou lava-louças.</td>
+        </tr>
+        <tr>
+          <th>Estoque</th>
+          <td id="produto-estoque">24 unidades disponíveis</td>
+        </tr>
+      </table>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -104,7 +138,7 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/carrinho.js?v=20261026sessao"></script>
+  <script src="js/produto.js"></script>
 </body>
 
 </html>

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Produtos — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Pedido confirmado — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -14,6 +14,7 @@
 
     <header class="topo-pagina">
       <a href="index.html" class="titulo">
+
         <h1>Gallery Coffee</h1>
       </a>
 
@@ -50,31 +51,27 @@
       <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
     </nav>
 
-    <section class="secao">
-      <h2>Todos os produtos</h2>
-
-      <!-- campo de busca: o JS só mostra/esconde os cartões que já existem no HTML -->
-      <input
-        type="text"
-        id="campo-busca"
-        placeholder="Buscar por nome..."
-        class="campo-busca">
-
-      <!-- filtro por coleção -->
-      <div class="menu" style="margin-top:0">
-        <button class="btn-menu botao-filtro ativo" data-colecao="todas">Todas</button>
-        <button class="btn-menu botao-filtro" data-colecao="monafe">Monafé</button>
-        <button class="btn-menu botao-filtro" data-colecao="van">Van Coffee</button>
-        <button class="btn-menu botao-filtro" data-colecao="frida">Fridachinoo</button>
-        <button class="btn-menu botao-filtro" data-colecao="adam">Adam Coffee</button>
-        <button class="btn-menu botao-filtro" data-colecao="munche">Munché</button>
-        <button class="btn-menu botao-filtro" data-colecao="monete">Moneté</button>
-        <button class="btn-menu botao-filtro" data-colecao="athena">Athenachino</button>
+    <section class="secao gc-sucesso-area">
+      <div class="gc-sucesso-hero">
+        <div class="gc-check">✓</div>
+        <span class="gc-eyebrow">GALLERY COFFEE · CHECKOUT</span>
+        <h2 id="sucesso-titulo">Consultando seu pedido...</h2>
+        <p id="sucesso-subtitulo">Acompanhamos tudo pelo seu histórico de compras.</p>
       </div>
-
-      <p id="mensagem-vazio" style="display:none; color:#6E6152;">Nenhum produto encontrado.</p>
-
-      <div class="grade" id="grade-produtos-api"><p>Carregando produtos...</p></div>
+      <div class="gc-sucesso-grid">
+        <article class="caixa gc-pedido-detalhe">
+          <div class="gc-pedido-topo"><div><span class="gc-eyebrow">NÚMERO DO PEDIDO</span>
+            <h3 id="sucesso-numero">—</h3></div><span class="gc-selo" id="sucesso-status">Carregando</span></div>
+          <p class="gc-muted" id="sucesso-data">—</p>
+          <div id="detalhes-sucesso"><p>Buscando informações no banco de dados...</p></div>
+        </article>
+        <aside class="gc-sucesso-aside"><h3>A arte continua por aqui.</h3>
+          <p>Veja todos os seus pedidos no perfil ou descubra outras peças das nossas coleções.</p>
+          <a class="botao botao-bloco" href="perfil.html?aba=pedidos">Ver meus pedidos</a>
+          <a class="botao botao-secundario botao-bloco" href="produtos.html">Continuar explorando</a>
+          <p class="gc-disclaimer">Compra simulada exclusivamente para apresentação escolar. Nenhum pagamento ou entrega real.</p>
+        </aside>
+      </div>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -88,14 +85,12 @@
       <div class="gc-footer-bottom"><span>© 2026 Gallery Coffee. Projeto semestral.</span>
         <span>Sem vendas, cobranças ou entregas reais.</span></div>
     </footer>
-
   </div>
 
   <script src="js/dados.js"></script>
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/produtos.js"></script>
+  <script src="js/pedido-sucesso.js"></script>
 </body>
-
 </html>

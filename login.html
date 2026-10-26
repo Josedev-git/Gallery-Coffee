@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Produto — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Entrar — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
-<body>
+<body class="gc-page gc-page--login">
   <div class="pagina">
 
     <header class="topo-pagina">
@@ -50,74 +50,44 @@
       <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
     </nav>
 
-    <section class="secao">
-      <!--
-        Essa página é usada para QUALQUER produto. A estrutura (onde fica
-        a imagem, o título, o preço, a tabela) é fixa aqui no HTML.
-        O arquivo js/produto.js só troca o TEXTO de cada parte, de acordo
-        com o produto que foi clicado no catálogo (usando o "?id=" da URL).
-      -->
-      <div class="hero">
-        <div class="hero-imagem">
-          <img id="produto-imagem" src="assets/logo.png" alt="Imagem do produto">
-        </div>
-        <div class="hero-texto">
-          <p id="produto-erro" role="alert"></p>
-          <h2 id="produto-nome">Carregando produto...</h2>
-          <p class="preco" id="produto-preco" style="font-size:22px">—</p>
-          <p id="produto-descricao">
-            Um retrato do enigmático sorriso da Mona Lisa emoldurado em cerâmica fosca, para
-            transformar cada café em um pequeno momento de contemplação.
-          </p>
-          <button
-            id="botao-adicionar-produto"
-            class="botao btn-adicionar"
-            data-id="pr1"
-            data-nome="Monafé"
-            data-preco="99.90"
-            data-imagem="assets/monafe.jpg">
-            Adicionar ao carrinho
-          </button>
-          <button
-            id="botao-favoritar-produto"
-            class="botao btn-favoritar"
-            data-id="pr1"
-            data-nome="Monafé"
-            data-preco="99.90"
-            data-imagem="assets/monafe.jpg">
-            ♡ Favoritar
-          </button>
-          <button id="botao-comprar-agora" class="botao">Comprar agora</button>
-        </div>
+    <section class="secao secao-acesso">
+      <div id="painel-login">
+        <h2>Entrar na minha conta</h2>
+        <form class="formulario" id="form-login">
+          <label>E-mail<input type="email" id="login-email" required></label>
+          <label>Senha<input type="password" id="login-senha" required></label>
+          <p id="erro-login" class="mensagem-erro"></p>
+          <button type="submit" class="botao">Entrar</button>
+        </form>
+        <p>Ainda não tem conta? <a href="login.html?modo=cadastro">Cadastre-se</a></p>
+        <p><a href="login.html?modo=recuperar">Esqueci minha senha</a></p>
       </div>
 
-      <h2>Ficha técnica</h2>
-      <table class="tabela tabela-ficha">
-        <tr>
-          <th>Coleção</th>
-          <td id="produto-colecao">Monafé</td>
-        </tr>
-        <tr>
-          <th>Capacidade</th>
-          <td id="produto-capacidade">400ml</td>
-        </tr>
-        <tr>
-          <th>Material</th>
-          <td id="produto-material">Cerâmica com acabamento fosco</td>
-        </tr>
-        <tr>
-          <th>Dimensões</th>
-          <td id="produto-dimensoes">8,5 × 8,5 × 11 cm</td>
-        </tr>
-        <tr>
-          <th>Conservação</th>
-          <td id="produto-cuidados">Lavar à mão. Não usar em micro-ondas ou lava-louças.</td>
-        </tr>
-        <tr>
-          <th>Estoque</th>
-          <td id="produto-estoque">24 unidades disponíveis</td>
-        </tr>
-      </table>
+      <div id="painel-cadastro" style="display:none;">
+        <h2>Criar conta</h2>
+        <form class="formulario" id="form-cadastro">
+          <label>Nome<input type="text" id="cadastro-nome" required></label>
+          <label>E-mail<input type="email" id="cadastro-email" required></label>
+          <label>Senha<input type="password" id="cadastro-senha" required minlength="8"></label>
+          <label>Confirmar senha<input type="password" id="cadastro-confirmar" required></label>
+          <p id="erro-cadastro" class="mensagem-erro"></p>
+          <button type="submit" class="botao">Criar conta</button>
+        </form>
+        <p>Já tem conta? <a href="login.html">Entrar</a></p>
+      </div>
+
+      <div id="painel-recuperar" style="display:none;">
+        <h2>Recuperar senha</h2>
+        <form class="formulario" id="form-recuperar">
+          <label>E-mail<input type="email" id="recuperar-email" required></label>
+          <button type="submit" class="botao">Enviar link de recuperação</button>
+        </form>
+        <p id="mensagem-recuperar" class="mensagem-sucesso" style="display:none;">
+          Se este e-mail existir em nossa base, um link de recuperação foi enviado.
+          O envio depende dos limites do serviço de e-mail configurado.
+        </p>
+        <p><a href="login.html">Voltar ao login</a></p>
+      </div>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -138,7 +108,7 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/produto.js"></script>
+  <script src="js/login.js?v=20261026-menu-login-fix1"></script>
 </body>
 
 </html>

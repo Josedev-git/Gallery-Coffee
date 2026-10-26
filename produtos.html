@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Sobre — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Produtos — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
-<body>
+<body class="gc-page gc-page--produtos">
   <div class="pagina">
 
     <header class="topo-pagina">
@@ -51,22 +51,30 @@
     </nav>
 
     <section class="secao">
-      <h2>Sobre a Gallery Coffee</h2>
-      <article>
-        <p>
-          A Gallery Coffee é uma marca que transforma copos para café em produtos colecionáveis
-          inspirados em arte. O produto principal não é o café — são os copos. A proposta é fazer
-          o cliente vivenciar a arte no dia a dia, levando consigo um copo que representa um
-          artista ou uma obra.
-        </p>
-        <p>
-          Cada coleção possui identidade visual própria e conta a história por trás da obra que a
-          inspirou — de Da Vinci a Van Gogh, passando por Frida Kahlo. A ideia central da marca é
-          transformar um objeto cotidiano em uma pequena galeria de arte que o cliente pode levar
-          consigo.
-        </p>
-      </article>
-      <a href="colecoes.html" class="btn-menu">Ver coleções</a>
+      <h2>Todos os produtos</h2>
+
+      <!-- campo de busca: o JS só mostra/esconde os cartões que já existem no HTML -->
+      <input
+        type="text"
+        id="campo-busca"
+        placeholder="Buscar por nome..."
+        class="campo-busca">
+
+      <!-- filtro por coleção -->
+      <div class="menu" style="margin-top:0">
+        <button class="btn-menu botao-filtro ativo" data-colecao="todas">Todas</button>
+        <button class="btn-menu botao-filtro" data-colecao="monafe">Monafé</button>
+        <button class="btn-menu botao-filtro" data-colecao="van">Van Coffee</button>
+        <button class="btn-menu botao-filtro" data-colecao="frida">Fridachinoo</button>
+        <button class="btn-menu botao-filtro" data-colecao="adam">Adam Coffee</button>
+        <button class="btn-menu botao-filtro" data-colecao="munche">Munché</button>
+        <button class="btn-menu botao-filtro" data-colecao="monete">Moneté</button>
+        <button class="btn-menu botao-filtro" data-colecao="athena">Athenachino</button>
+      </div>
+
+      <p id="mensagem-vazio" style="display:none; color:#6E6152;">Nenhum produto encontrado.</p>
+
+      <div class="grade" id="grade-produtos-api"><p>Carregando produtos...</p></div>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -87,6 +95,7 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/produtos.js"></script>
 </body>
 
 </html>

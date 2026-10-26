@@ -30,6 +30,11 @@
   --verde: #1F3D2B;
   --vinho: #8C3A3A;
   --borda: #DCD0B4;
+  --superficie: #FBF7EC;
+  --superficie-suave: #EEE4D2;
+  --borda-suave: #E3D7BF;
+  --sombra-suave: 0 8px 26px rgba(43, 32, 21, 0.055);
+  --raio-cartao: 12px;
   --fonte-titulo: 'Playfair Display', serif;
   --fonte-texto: 'EB Garamond', serif;
 }
@@ -41,7 +46,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--bg);
+  background-color: #F4EEE0;
   font-family: var(--fonte-texto);
   color: var(--tinta);
   font-size: 17px;
@@ -152,10 +157,10 @@ a {
 }
 
 /* ---------- menu escondido, revelado pelo ícone de hambúrguer ---------- */
+/* Menu hambúrguer: horizontal no computador e vertical no celular. */
 .menu-lateral {
   display: none;
-  flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   padding: 16px 0 20px;
   margin-top: 18px;
   border-top: 1px solid var(--borda);
@@ -164,12 +169,20 @@ a {
 
 .menu-lateral.aberto {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .menu-lateral .btn-menu {
+  flex: 0 0 auto;
   border: none;
-  text-align: left;
-  padding: 10px 4px;
+  text-align: center;
+  padding: 10px 9px;
+  white-space: nowrap;
   border-radius: 0;
 }
 
@@ -831,8 +844,20 @@ input, select, textarea, button { max-width: 100%; font-family: inherit; }
   .icone-topo { min-width: 36px; min-height: 40px; }
   .contador-icone { right: -4px; }
 
-  /* menu hambúrguer: itens com área de toque grande */
-  .menu-lateral .btn-menu { padding: 13px 4px; font-size: 14px; }
+  /* Celular: menu em coluna e links ocupando toda a largura. */
+  .menu-lateral.aberto {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: visible;
+  }
+  .menu-lateral .btn-menu {
+    width: 100%;
+    text-align: left;
+    padding: 13px 4px;
+    font-size: 14px;
+    white-space: normal;
+  }
 
   /* títulos e seções */
   .secao { margin-top: 30px; }
@@ -1084,4 +1109,280 @@ input, select, textarea, button { max-width: 100%; font-family: inherit; }
  .gc-cupom{align-items:flex-start;flex-direction:column}
  .gc-acoes-tabela{flex-direction:column}
  .gc-pedido{padding:15px}
+}
+
+
+/* ============================================================
+   GALLERY COFFEE | IDENTIDADE VISUAL UNIFICADA
+   Todas as 12 paginas usam o mesmo fundo de papel e os mesmos
+   tokens de superficies, cores, formularios, cards e rodape.
+   Manter estas regras no final para nao herdar cores antigas.
+   ============================================================ */
+
+html {
+  min-height: 100%;
+}
+
+body.gc-page {
+  min-height: 100vh;
+  color: var(--tinta);
+}
+
+.gc-page > .pagina {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.gc-page .secao {
+  background-color: transparent;
+}
+
+.gc-page .topo-pagina {
+  background-color: transparent;
+  border-color: var(--borda);
+}
+
+.gc-page .secao h2,
+.gc-page .secao h3,
+.gc-page .gc-admin-cabecalho h2 {
+  color: var(--tinta);
+}
+
+.gc-page .gc-muted,
+.gc-page .cartao .info p,
+.gc-page .estatistica .rotulo {
+  color: var(--texto-suave);
+}
+
+/* Um unico tom de papel claro para superficies em todo o site. */
+.gc-page .caixa,
+.gc-page .cartao,
+.gc-page .estatistica,
+.gc-page .gc-pedido,
+.gc-page .gc-pedido-detalhe,
+.gc-page .gc-cupom,
+.gc-page .tabela th,
+.gc-page .caixa-flutuante,
+.gc-page .tabela-carrinho tbody tr {
+  background-color: var(--superficie);
+  border-color: var(--borda-suave);
+}
+
+.gc-page .caixa,
+.gc-page .cartao,
+.gc-page .estatistica,
+.gc-page .gc-pedido,
+.gc-page .gc-pedido-detalhe,
+.gc-page .gc-cupom,
+.gc-page .caixa-flutuante {
+  border-radius: var(--raio-cartao);
+  box-shadow: var(--sombra-suave);
+}
+
+.gc-page .cartao {
+  overflow: hidden;
+}
+
+.gc-page .cartao img {
+  background: var(--superficie);
+}
+
+.gc-page .tabela td,
+.gc-page .tabela th,
+.gc-page .lista-simples li,
+.gc-page .gc-itens > div,
+.gc-page .gc-resumo-fatura > div,
+.gc-page .gc-pedido-topo {
+  border-color: var(--borda-suave);
+}
+
+.gc-page .tabela tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, .18);
+}
+
+/* Entradas iguais no login, no carrinho, no perfil e no admin. */
+.gc-page input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+.gc-page select,
+.gc-page textarea,
+.gc-page .campo-busca,
+.gc-page .cupom-linha input {
+  background-color: var(--superficie);
+  color: var(--tinta);
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  accent-color: var(--verde);
+}
+
+.gc-page input:focus-visible,
+.gc-page select:focus-visible,
+.gc-page textarea:focus-visible,
+.gc-page button:focus-visible,
+.gc-page a:focus-visible {
+  outline: 2px solid var(--dourado-escuro);
+  outline-offset: 3px;
+}
+
+.gc-page .botao {
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.gc-page .botao-secundario {
+  background: transparent;
+  border-color: var(--borda);
+  color: var(--tinta);
+}
+
+.gc-page .botao-secundario:hover {
+  background: var(--superficie-suave);
+  border-color: var(--dourado-escuro);
+  color: var(--tinta);
+}
+
+.gc-page .botao:disabled {
+  opacity: .58;
+  cursor: not-allowed;
+}
+
+.gc-page .btn-menu,
+.gc-page .botao-aba {
+  border-radius: 6px;
+}
+
+.gc-page .botao-aba.ativa {
+  background: rgba(201, 162, 39, .08);
+  color: var(--dourado-escuro);
+}
+
+.gc-page .gc-selo {
+  background: var(--superficie-suave);
+  border-color: var(--borda);
+  color: var(--tinta);
+}
+
+.gc-page .gc-eyebrow,
+.gc-page .gc-link,
+.gc-page .gc-pedido-total strong,
+.gc-page .gc-resumo-fatura .gc-fatura-total,
+.gc-page .gc-status-control {
+  color: var(--dourado-escuro);
+}
+
+.gc-page .gc-status-control select {
+  background: var(--superficie);
+  border-color: var(--borda);
+}
+
+.gc-page .gc-demo-aviso {
+  background: var(--superficie-suave);
+  border-color: var(--borda);
+  color: var(--tinta);
+}
+
+/* Sobre: conteudo ganha a mesma superficie dos outros paineis. */
+.gc-page--sobre .secao > article {
+  max-width: 850px;
+  background: var(--superficie);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  padding: clamp(20px, 3vw, 30px);
+  box-shadow: var(--sombra-suave);
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+.gc-page--sobre .secao > article p:first-child { margin-top: 0; }
+.gc-page--sobre .secao > article p:last-child { margin-bottom: 0; }
+
+/* Acesso: login, cadastro e recuperacao com a mesma moldura. */
+.gc-page--login .secao-acesso {
+  width: 100%;
+  max-width: 570px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gc-page--login #painel-login,
+.gc-page--login #painel-cadastro,
+.gc-page--login #painel-recuperar {
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid var(--borda-suave);
+  border-radius: var(--raio-cartao);
+  background: var(--superficie);
+  box-shadow: var(--sombra-suave);
+}
+
+.gc-page--login .secao-acesso h2 {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
+.gc-page--login .formulario { max-width: none; }
+.gc-page--login .formulario input { background: var(--bg); }
+.gc-page--login .formulario .botao { width: 100%; }
+.gc-page--login .secao-acesso p { line-height: 1.5; }
+
+/* Revisao e pedidos: superfices claras uniformizadas. */
+.gc-page .gc-sucesso-aside {
+  background: var(--superficie-suave);
+  border: 1px solid var(--borda);
+  color: var(--tinta);
+}
+.gc-page .gc-sucesso-aside h3 { color: var(--tinta); }
+.gc-page .gc-sucesso-hero h2 { color: var(--tinta); }
+.gc-page .gc-sucesso-hero p { color: var(--texto-suave); }
+.gc-page .gc-check {
+  background: var(--superficie-suave);
+  color: var(--verde);
+  border-color: var(--borda);
+}
+.gc-page .gc-sucesso-aside .gc-disclaimer { color: var(--texto-suave); }
+
+/* Rodape unico: nao muda de tom conforme a pagina ou seu conteudo. */
+.gc-page .gc-rodape {
+  margin-top: auto;
+  padding-top: 38px;
+  background-color: var(--superficie);
+  color: var(--tinta);
+  border: 1px solid var(--borda-suave);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  box-shadow: none;
+  text-align: left;
+  width: 100%;
+}
+
+.gc-page .gc-footer-logo,
+.gc-page .gc-footer-grid h3 { color: var(--tinta); }
+.gc-page .gc-footer-grid a:not(.gc-footer-logo),
+.gc-page .gc-footer-note,
+.gc-page .gc-footer-bottom { color: var(--texto-suave); }
+.gc-page .gc-footer-bottom { border-color: var(--borda); }
+.gc-page .gc-footer-grid a:not(.gc-footer-logo):hover { color: var(--dourado-escuro); }
+
+/* Distancia consistente entre a ultima secao e o rodape. */
+.gc-page .secao:last-of-type { margin-bottom: 54px; }
+.gc-page--login .secao-acesso { margin-top: clamp(34px, 6vw, 68px); }
+.gc-page--sobre .secao { margin-bottom: 54px; }
+
+@media (max-width: 760px) {
+  .gc-page .gc-rodape { padding-top: 30px; }
+  .gc-page .secao:last-of-type { margin-bottom: 36px; }
+  .gc-page--login .secao-acesso { margin-top: 24px; }
+  .gc-page--login #painel-login,
+  .gc-page--login #painel-cadastro,
+  .gc-page--login #painel-recuperar { padding: 22px 18px; }
+  .gc-page .gc-cupom,
+  .gc-page .gc-pedido { border-radius: var(--raio-cartao); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-page *,
+  .gc-page *::before,
+  .gc-page *::after {
+    scroll-behavior: auto;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
 }

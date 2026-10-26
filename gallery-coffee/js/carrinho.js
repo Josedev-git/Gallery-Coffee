@@ -52,8 +52,19 @@
     try { await aplicar(codigo); }
     catch (e) {cupom=null;calcular();aviso('Cupom inválido ou expirado.',true);}
   });
-  document.getElementById('botao-checkout').addEventListener('click',e => {
-    if (!pegarCarrinho().length) {e.preventDefault();aviso('Seu carrinho está vazio.',true);}
+  // Sem login: direciona ao cadastro/login ANTES do checkout e preserva o carrinho.
+  document.getElementById('botao-checkout').addEventListener('click', e => {
+    if (!pegarCarrinho().length) {
+      e.preventDefault();
+      aviso('Seu carrinho está vazio.', true);
+      return;
+    }
+    if (!pegarUsuarioLogado()) {
+      e.preventDefault();
+      sessionStorage.setItem('gc_redirect_after_login', 'checkout.html');
+      window.location.href = 'login.html?retorno=checkout.html';
+    }
+    // Se já está logado, o link funciona normalmente e abre checkout.html.
   });
   montar();
   const antigo = sessionStorage.getItem('cupomAplicado');

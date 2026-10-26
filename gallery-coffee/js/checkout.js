@@ -1,4 +1,10 @@
 /* Checkout escolar: produtos, cupons e totais sao validados novamente no backend. */
+
+// Protecao tambem para quem digita checkout.html diretamente no navegador.
+if (!pegarUsuarioLogado()) {
+  sessionStorage.setItem('gc_redirect_after_login', 'checkout.html');
+  window.location.replace('login.html?retorno=checkout.html');
+} else {
 let etapaAtual=1,finalizando=false;
 const errorCheckout=document.getElementById('erro-checkout');
 const botaoFinalizar=document.getElementById('botao-finalizar-pedido');
@@ -84,3 +90,5 @@ botaoFinalizar.addEventListener('click',async function(){
 });
 if(!pegarCarrinho().length)location.replace('carrinho.html');
 mostrarEtapa(1);
+
+}

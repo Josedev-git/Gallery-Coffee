@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Entrar — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Carrinho — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -51,42 +51,38 @@
     </nav>
 
     <section class="secao">
-      <div id="painel-login">
-        <h2>Entrar na minha conta</h2>
-        <form class="formulario" id="form-login">
-          <label>E-mail<input type="email" id="login-email" required></label>
-          <label>Senha<input type="password" id="login-senha" required></label>
-          <p id="erro-login" class="mensagem-erro"></p>
-          <button type="submit" class="botao">Entrar</button>
-        </form>
-        <p>Ainda não tem conta? <a href="login.html?modo=cadastro">Cadastre-se</a></p>
-        <p><a href="login.html?modo=recuperar">Esqueci minha senha</a></p>
-      </div>
+      <h2>Meu carrinho</h2>
 
-      <div id="painel-cadastro" style="display:none;">
-        <h2>Criar conta</h2>
-        <form class="formulario" id="form-cadastro">
-          <label>Nome<input type="text" id="cadastro-nome" required></label>
-          <label>E-mail<input type="email" id="cadastro-email" required></label>
-          <label>Senha<input type="password" id="cadastro-senha" required minlength="8"></label>
-          <label>Confirmar senha<input type="password" id="cadastro-confirmar" required></label>
-          <p id="erro-cadastro" class="mensagem-erro"></p>
-          <button type="submit" class="botao">Criar conta</button>
-        </form>
-        <p>Já tem conta? <a href="login.html">Entrar</a></p>
-      </div>
+      <table class="tabela tabela-carrinho">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="corpo-carrinho">
+          <tr>
+            <td colspan="4">Carregando...</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <div id="painel-recuperar" style="display:none;">
-        <h2>Recuperar senha</h2>
-        <form class="formulario" id="form-recuperar">
-          <label>E-mail<input type="email" id="recuperar-email" required></label>
-          <button type="submit" class="botao">Enviar link de recuperação</button>
-        </form>
-        <p id="mensagem-recuperar" class="mensagem-sucesso" style="display:none;">
-          Se este e-mail existir em nossa base, um link de recuperação foi enviado.
-          O envio depende dos limites do serviço de e-mail configurado.
-        </p>
-        <p><a href="login.html">Voltar ao login</a></p>
+      <div class="caixa caixa-resumo">
+        <label class="rotulo-cupom" for="campo-cupom">Possui um cupom? <small>(validado no servidor)</small></label>
+        <div class="cupom-linha">
+          <input type="text" id="campo-cupom" placeholder="CÓDIGO" autocomplete="off">
+          <button id="botao-aplicar-cupom" class="botao">Aplicar</button>
+        </div>
+        <p id="mensagem-cupom"></p>
+
+        <hr>
+        <p class="linha-valor"><span>Subtotal</span> <span id="valor-subtotal">R$ 0,00</span></p>
+        <p id="linha-desconto" class="linha-valor desconto" style="display:none;"><span>Desconto</span> <span id="valor-desconto">R$ 0,00</span></p>
+        <p class="linha-valor total"><span>Total</span> <span id="valor-total">R$ 0,00</span></p>
+
+        <a href="checkout.html" id="botao-checkout" class="botao botao-bloco">Finalizar compra</a>
       </div>
     </section>
 
@@ -108,7 +104,7 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/login.js?v=20261026sessao"></script>
+  <script src="js/carrinho.js?v=20261026-menu-login-fix1"></script>
 </body>
 
 </html>

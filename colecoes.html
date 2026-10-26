@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Pedido confirmado — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Coleções — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
-
 <body>
   <div class="pagina">
-
     <header class="topo-pagina">
       <a href="index.html" class="titulo">
-
         <h1>Gallery Coffee</h1>
       </a>
 
@@ -51,27 +47,33 @@
       <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
     </nav>
 
-    <section class="secao gc-sucesso-area">
-      <div class="gc-sucesso-hero">
-        <div class="gc-check">✓</div>
-        <span class="gc-eyebrow">GALLERY COFFEE · CHECKOUT</span>
-        <h2 id="sucesso-titulo">Consultando seu pedido...</h2>
-        <p id="sucesso-subtitulo">Acompanhamos tudo pelo seu histórico de compras.</p>
+    <!-- Sem parâmetro: mostra as três coleções. Com ?colecao=id: mostra os detalhes da coleção. -->
+    <section class="secao" id="lista-colecoes">
+      <h2>Coleções</h2>
+      <div class="grade" id="grade-colecoes"></div>
+    </section>
+
+    <section class="secao" id="detalhe-colecao" style="display:none;">
+      <div class="hero">
+        <div class="hero-imagem">
+          <img id="colecao-imagem" src="" alt="">
+        </div>
+        <div class="hero-texto">
+          <h2 id="colecao-nome"></h2>
+          <p><strong>Artista:</strong> <span id="colecao-artista"></span> — <span id="colecao-epoca"></span></p>
+          <p id="colecao-contexto"></p>
+          <p id="colecao-bio"></p>
+          <p><a href="colecoes.html" class="botao">← Ver todas as coleções</a></p>
+        </div>
       </div>
-      <div class="gc-sucesso-grid">
-        <article class="caixa gc-pedido-detalhe">
-          <div class="gc-pedido-topo"><div><span class="gc-eyebrow">NÚMERO DO PEDIDO</span>
-            <h3 id="sucesso-numero">—</h3></div><span class="gc-selo" id="sucesso-status">Carregando</span></div>
-          <p class="gc-muted" id="sucesso-data">—</p>
-          <div id="detalhes-sucesso"><p>Buscando informações no banco de dados...</p></div>
-        </article>
-        <aside class="gc-sucesso-aside"><h3>A arte continua por aqui.</h3>
-          <p>Veja todos os seus pedidos no perfil ou descubra outras peças das nossas coleções.</p>
-          <a class="botao botao-bloco" href="perfil.html?aba=pedidos">Ver meus pedidos</a>
-          <a class="botao botao-secundario botao-bloco" href="produtos.html">Continuar explorando</a>
-          <p class="gc-disclaimer">Compra simulada exclusivamente para apresentação escolar. Nenhum pagamento ou entrega real.</p>
-        </aside>
+    </section>
+
+    <section class="secao secao-produtos-colecao" id="produtos-colecao" style="display:none;">
+      <div class="banner-colecao">
+        <img src="assets/colecao-banner.jpg" alt="Arte das coleções Gallery Coffee">
       </div>
+      <h2>Leve a obra com você</h2>
+      <div class="grade" id="grade-produtos-colecao"></div>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -91,6 +93,6 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/pedido-sucesso.js"></script>
+  <script src="js/colecoes.js"></script>
 </body>
 </html>

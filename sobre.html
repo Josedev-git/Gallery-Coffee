@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Minha conta — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261026final">
+  <title>Sobre — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026-menu-login-fix1">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -14,7 +14,6 @@
 
     <header class="topo-pagina">
       <a href="index.html" class="titulo">
-
         <h1>Gallery Coffee</h1>
       </a>
 
@@ -52,37 +51,22 @@
     </nav>
 
     <section class="secao">
-      <h2>Minha conta</h2><p class="gc-muted">Seus dados e pedidos registrados no Gallery Coffee.</p>
-
-      <div class="abas">
-        <button class="botao-aba ativa" data-aba="perfil">Perfil</button>
-        <button class="botao-aba" data-aba="pedidos">Meus pedidos</button>
-        <button class="botao-aba" data-aba="enderecos">Endereços</button>
-      </div>
-
-      <div class="conteudo-aba ativa" id="aba-perfil">
-        <p><strong>Nome:</strong> <span id="perfil-nome"></span></p>
-        <p><strong>E-mail:</strong> <span id="perfil-email"></span></p>
-        <p><strong>Tipo de conta:</strong> <span id="perfil-tipo"></span></p>
-      </div>
-
-      <div class="conteudo-aba" id="aba-pedidos">
-        <p id="pedidos-vazio" class="gc-muted" style="display:none;">Você ainda não fez nenhum pedido.</p>
-        <div id="lista-pedidos"></div>
-      </div>
-
-      <div class="conteudo-aba" id="aba-enderecos">
-        <form class="formulario" id="form-endereco-perfil">
-          <label>CEP <input type="text" id="end-cep"></label>
-          <label>Rua <input type="text" id="end-rua"></label>
-          <label>Número <input type="text" id="end-numero"></label>
-          <label>Bairro <input type="text" id="end-bairro"></label>
-          <label>Cidade <input type="text" id="end-cidade"></label>
-          <label>Estado <input type="text" id="end-estado"></label>
-          <button type="submit" class="botao">Salvar endereço</button>
-        </form>
-        <p id="endereco-salvo" class="mensagem-sucesso" style="display:none;">Endereço salvo!</p>
-      </div>
+      <h2>Sobre a Gallery Coffee</h2>
+      <article>
+        <p>
+          A Gallery Coffee é uma marca que transforma copos para café em produtos colecionáveis
+          inspirados em arte. O produto principal não é o café — são os copos. A proposta é fazer
+          o cliente vivenciar a arte no dia a dia, levando consigo um copo que representa um
+          artista ou uma obra.
+        </p>
+        <p>
+          Cada coleção possui identidade visual própria e conta a história por trás da obra que a
+          inspirou — de Da Vinci a Van Gogh, passando por Frida Kahlo. A ideia central da marca é
+          transformar um objeto cotidiano em uma pequena galeria de arte que o cliente pode levar
+          consigo.
+        </p>
+      </article>
+      <a href="colecoes.html" class="btn-menu">Ver coleções</a>
     </section>
 
     <footer class="rodape gc-rodape">
@@ -103,7 +87,6 @@
   <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
   <script src="js/ui.js"></script>
-  <script src="js/perfil.js?v=20261026sessao"></script>
 </body>
 
 </html>
