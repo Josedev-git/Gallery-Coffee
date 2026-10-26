@@ -1015,3 +1015,73 @@ input, select, textarea, button { max-width: 100%; font-family: inherit; }
 }
 
 .passo-checkout h3 { margin-bottom: 14px; }
+
+/* ============================================================
+   GALLERY COFFEE · ACABAMENTO FINAL (2026)
+   ============================================================ */
+.gc-muted { color:var(--texto-suave,#6e6152);font-size:.92rem;line-height:1.65; }
+.gc-eyebrow {display:block;font-size:.68rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase;color:#95732b;margin-bottom:8px}
+.gc-loading{padding:30px 10px;text-align:center;color:#806f5d}
+.gc-selo{display:inline-flex;align-items:center;gap:5px;background:#f1eadb;border:1px solid #ddd0b0;border-radius:100px;font-weight:700;color:#705620;font-size:.75rem;padding:7px 12px;white-space:nowrap}
+.gc-link{display:inline-block;margin-top:12px;color:#836528;text-underline-offset:4px;font-weight:700;font-size:.88rem}
+.gc-pedido{margin:14px 0;border:1px solid #e6ddcf;border-radius:12px;background:#fffefd;padding:22px}
+.gc-pedido-topo{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;border-bottom:1px solid #eee5d9;padding-bottom:16px;margin-bottom:15px}
+.gc-pedido-topo p{margin:5px 0 0}
+.gc-itens{display:grid;gap:0}
+.gc-itens>div,.gc-resumo-fatura>div{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #eee8df;padding:11px 0;font-size:.93rem}
+.gc-itens strong,.gc-resumo-fatura strong{white-space:nowrap}
+.gc-pedido-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e7dfd3;margin-top:14px;padding-top:15px;font-size:1rem}
+.gc-pedido-total strong{font-size:1.22rem;color:#87631a}
+.gc-rodape{background:#f6f1e8;border-top:1px solid #e8dfd2;padding:42px clamp(18px,4vw,54px) 16px;margin-top:70px;text-align:left;border-radius:16px 16px 0 0}
+.gc-footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:38px;padding-bottom:30px}
+.gc-footer-logo{display:block;font-size:1.65rem;font-family:Georgia,serif;text-decoration:none;color:#403022;font-weight:700;letter-spacing:-.02em;margin-bottom:12px}
+.gc-footer-grid p{font-size:.89rem;line-height:1.7;max-width:270px;margin:0 0 18px}
+.gc-footer-note{font-size:.73rem;text-transform:uppercase;letter-spacing:.09em;color:#947a54}
+.gc-footer-grid h3{font-size:.77rem;text-transform:uppercase;letter-spacing:.13em;margin:8px 0 18px;color:#483626}
+.gc-footer-grid a:not(.gc-footer-logo){display:block;text-decoration:none;margin-bottom:10px;color:#725e48;font-size:.9rem}
+.gc-footer-grid a:hover{text-decoration:underline}
+.gc-footer-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #dfd4c3;padding:19px 0 4px;font-size:.77rem;color:#806d56}
+.gc-sucesso-area{max-width:1040px;margin:45px auto 30px}
+.gc-sucesso-hero{text-align:center;max-width:700px;margin:0 auto 35px}
+.gc-sucesso-hero h2{font-family:Georgia,serif;font-size:clamp(1.9rem,4.5vw,3.3rem);line-height:1.15;letter-spacing:-.025em;margin:7px 0 16px;color:#3a2c21}
+.gc-sucesso-hero p{font-size:1rem;color:#796951;line-height:1.6}
+.gc-check{margin:0 auto 24px;display:grid;place-items:center;background:#f0e7d3;color:#7a5d23;border:1px solid #dac99f;border-radius:100px;width:70px;height:70px;font-size:2rem}
+.gc-sucesso-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,1fr);gap:22px;align-items:start}
+.gc-pedido-detalhe{padding:clamp(16px,3vw,30px);border:1px solid #e8dfd2;border-radius:15px;box-shadow:0 10px 40px #503c2412}
+.gc-pedido-detalhe h3{font-size:1.4rem;font-family:Georgia,serif;margin:3px 0 0}
+.gc-resumo-fatura{margin:16px 0}
+.gc-resumo-fatura .gc-fatura-total{font-size:1.13rem;font-weight:700;border-bottom:none;color:#75571f}
+.gc-sucesso-aside{border-radius:14px;background:#e9dfcd;padding:30px;color:#423324}
+.gc-sucesso-aside h3{font-family:Georgia,serif;font-size:1.65rem;margin:0 0 13px;line-height:1.2}
+.gc-sucesso-aside p{font-size:.92rem;line-height:1.7;margin-bottom:22px}
+.gc-sucesso-aside .botao{display:block;text-align:center;margin:10px 0;max-width:100%;text-decoration:none}
+.gc-sucesso-aside .gc-disclaimer{margin:23px 0 0;font-size:.76rem;color:#796b56}
+.gc-demo-aviso{margin:20px 0 10px;background:#f7f1e2;color:#68512e;border:1px solid #e4d4b5;border-radius:10px;padding:14px 17px;font-size:.87rem;line-height:1.5}
+.gc-admin-cabecalho{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.gc-admin-cabecalho h2{margin:0 0 8px}
+.gc-admin-cabecalho p{margin:0}
+.gc-acoes-tabela{display:flex;gap:7px;flex-wrap:wrap}
+.gc-acoes-tabela .botao{font-size:.78rem;padding:8px 11px}
+.gc-status-control{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:.85rem}
+.gc-status-control select{max-width:260px;padding:8px;border:1px solid #dfd5c5;background:#fff;border-radius:8px}
+.gc-cupom{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px;margin-bottom:10px;border-radius:10px;border:1px solid #e8dfd2}
+.gc-cupom p{margin:5px 0 0}
+#admin-aviso:empty{display:none}
+#admin-aviso{margin-bottom:18px}
+@media(max-width:760px){
+ .gc-footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+ .gc-footer-grid>div:first-child{grid-column:1/-1}
+ .gc-sucesso-grid{grid-template-columns:1fr}
+ .gc-sucesso-area{margin-top:20px}
+ .gc-sucesso-hero{margin-bottom:22px}
+ .gc-rodape{margin-top:35px;padding:30px 20px 18px}
+ .gc-pedido-topo{flex-wrap:wrap}
+ .gc-status-control{flex-wrap:wrap}
+}
+@media(max-width:420px){
+ .gc-footer-grid{grid-template-columns:1fr}
+ .gc-footer-grid>div:first-child{grid-column:auto}
+ .gc-cupom{align-items:flex-start;flex-direction:column}
+ .gc-acoes-tabela{flex-direction:column}
+ .gc-pedido{padding:15px}
+}

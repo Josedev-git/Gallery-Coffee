@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Entrar — Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261009mobile3">
+  <link rel="stylesheet" href="style.css?v=20261026final">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -61,11 +61,6 @@
         </form>
         <p>Ainda não tem conta? <a href="login.html?modo=cadastro">Cadastre-se</a></p>
         <p><a href="login.html?modo=recuperar">Esqueci minha senha</a></p>
-        <div class="caixa" style="max-width:340px; font-size:13px; color:#6E6152;">
-          <strong>Contas de teste:</strong><br>
-          Cliente: teste@gallerycoffee.com / 123456<br>
-          Administrador: admin@gallerycoffee.com / admin123
-        </div>
       </div>
 
       <div id="painel-cadastro" style="display:none;">
@@ -73,7 +68,7 @@
         <form class="formulario" id="form-cadastro">
           <label>Nome<input type="text" id="cadastro-nome" required></label>
           <label>E-mail<input type="email" id="cadastro-email" required></label>
-          <label>Senha<input type="password" id="cadastro-senha" required minlength="4"></label>
+          <label>Senha<input type="password" id="cadastro-senha" required minlength="8"></label>
           <label>Confirmar senha<input type="password" id="cadastro-confirmar" required></label>
           <p id="erro-cadastro" class="mensagem-erro"></p>
           <button type="submit" class="botao">Criar conta</button>
@@ -89,23 +84,31 @@
         </form>
         <p id="mensagem-recuperar" class="mensagem-sucesso" style="display:none;">
           Se este e-mail existir em nossa base, um link de recuperação foi enviado.
-          (Simulação — este projeto não envia e-mails de verdade.)
+          O envio depende dos limites do serviço de e-mail configurado.
         </p>
         <p><a href="login.html">Voltar ao login</a></p>
       </div>
     </section>
 
-    <footer class="rodape">
-      <hr>
-      <p>Gallery Coffee — projeto de estudo (front-end)</p>
+    <footer class="rodape gc-rodape">
+      <div class="gc-footer-grid">
+        <div><a class="gc-footer-logo" href="index.html">Gallery Coffee</a>
+          <p>Arte, café e criatividade em cada detalhe.</p>
+          <span class="gc-footer-note">Projeto acadêmico · Ambiente demonstrativo</span></div>
+        <div><h3>Explore</h3><a href="produtos.html">Produtos</a><a href="colecoes.html">Coleções</a><a href="sobre.html">Nossa história</a></div>
+        <div><h3>Sua conta</h3><a href="perfil.html?aba=pedidos">Meus pedidos</a><a href="carrinho.html">Meu carrinho</a><a href="login.html">Entrar / cadastrar</a></div>
+      </div>
+      <div class="gc-footer-bottom"><span>© 2026 Gallery Coffee. Projeto semestral.</span>
+        <span>Sem vendas, cobranças ou entregas reais.</span></div>
     </footer>
 
   </div>
 
   <script src="js/dados.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=20261026sessao"></script>
   <script src="js/api.js"></script>
-  <script src="js/login.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/login.js?v=20261026sessao"></script>
 </body>
 
 </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Pedido confirmado — Gallery Coffee</title>
+  <link rel="stylesheet" href="style.css?v=20261026final">
+  <link rel="icon" href="assets/logo.png">
+</head>
+
+<body>
+  <div class="pagina">
+
+    <header class="topo-pagina">
+      <a href="index.html" class="titulo">
+
+        <h1>Gallery Coffee</h1>
+      </a>
+
+      <div class="acoes-topo">
+        <a href="produtos.html" class="icone-topo" title="Buscar produtos" aria-label="Buscar produtos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+        <a href="favoritos.html" class="icone-topo" title="Favoritos" aria-label="Favoritos">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+          <span class="contador-icone" id="contador-favoritos"></span>
+        </a>
+        <a href="carrinho.html" class="icone-topo" title="Carrinho" aria-label="Carrinho">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="contador-icone" id="contador-carrinho"></span>
+        </a>
+        <a href="login.html" class="icone-topo" id="link-conta" title="Minha conta" aria-label="Minha conta">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </a>
+        <button class="icone-topo" id="botao-menu" title="Menu" aria-label="Abrir menu" type="button">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="menu-lateral" id="menu-lateral">
+      <a href="index.html" class="btn-menu">Início</a>
+      <a href="produtos.html" class="btn-menu">Produtos</a>
+      <a href="colecoes.html" class="btn-menu">Coleções</a>
+      <a href="sobre.html" class="btn-menu">Sobre</a>
+      <a href="favoritos.html" class="btn-menu">Favoritos</a>
+      <a href="carrinho.html" class="btn-menu">Carrinho</a>
+      <a href="perfil.html" class="btn-menu">Minha conta</a>
+      <a href="admin.html" class="btn-menu" id="link-admin" style="display:none">Admin</a>
+      <a href="login.html" class="btn-menu" id="link-conta-menu">Entrar</a>
+    </nav>
+
+    <section class="secao gc-sucesso-area">
+      <div class="gc-sucesso-hero">
+        <div class="gc-check">✓</div>
+        <span class="gc-eyebrow">GALLERY COFFEE · CHECKOUT</span>
+        <h2 id="sucesso-titulo">Consultando seu pedido...</h2>
+        <p id="sucesso-subtitulo">Acompanhamos tudo pelo seu histórico de compras.</p>
+      </div>
+      <div class="gc-sucesso-grid">
+        <article class="caixa gc-pedido-detalhe">
+          <div class="gc-pedido-topo"><div><span class="gc-eyebrow">NÚMERO DO PEDIDO</span>
+            <h3 id="sucesso-numero">—</h3></div><span class="gc-selo" id="sucesso-status">Carregando</span></div>
+          <p class="gc-muted" id="sucesso-data">—</p>
+          <div id="detalhes-sucesso"><p>Buscando informações no banco de dados...</p></div>
+        </article>
+        <aside class="gc-sucesso-aside"><h3>A arte continua por aqui.</h3>
+          <p>Veja todos os seus pedidos no perfil ou descubra outras peças das nossas coleções.</p>
+          <a class="botao botao-bloco" href="perfil.html?aba=pedidos">Ver meus pedidos</a>
+          <a class="botao botao-secundario botao-bloco" href="produtos.html">Continuar explorando</a>
+          <p class="gc-disclaimer">Compra simulada exclusivamente para apresentação escolar. Nenhum pagamento ou entrega real.</p>
+        </aside>
+      </div>
+    </section>
+
+    <footer class="rodape gc-rodape">
+      <div class="gc-footer-grid">
+        <div><a class="gc-footer-logo" href="index.html">Gallery Coffee</a>
+          <p>Arte, café e criatividade em cada detalhe.</p>
+          <span class="gc-footer-note">Projeto acadêmico · Ambiente demonstrativo</span></div>
+        <div><h3>Explore</h3><a href="produtos.html">Produtos</a><a href="colecoes.html">Coleções</a><a href="sobre.html">Nossa história</a></div>
+        <div><h3>Sua conta</h3><a href="perfil.html?aba=pedidos">Meus pedidos</a><a href="carrinho.html">Meu carrinho</a><a href="login.html">Entrar / cadastrar</a></div>
+      </div>
+      <div class="gc-footer-bottom"><span>© 2026 Gallery Coffee. Projeto semestral.</span>
+        <span>Sem vendas, cobranças ou entregas reais.</span></div>
+    </footer>
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/script.js?v=20261026sessao"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pedido-sucesso.js"></script>
+</body>
+</html>

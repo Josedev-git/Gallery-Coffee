@@ -58,29 +58,14 @@
       document.getElementById("colecao-contexto").textContent = selecionada.contexto;
       document.getElementById("colecao-bio").textContent = selecionada.bio;
 
-      var produtos = pegarProdutos();
-      for (var k = 0; k < produtos.length; k++) {
-        if (produtos[k].colecaoId === selecionada.id) {
-          gradeProdutos.innerHTML += cardProduto(produtos[k]);
-        }
-      }
-
-      // Os cards foram criados depois do script.js, então ligamos os botões novamente.
-      gradeProdutos.querySelectorAll(".btn-adicionar").forEach(function (botao) {
-        botao.addEventListener("click", function () {
-          adicionarAoCarrinho(botao.dataset.id, botao.dataset.nome, parseFloat(botao.dataset.preco), botao.dataset.imagem);
-          var original = botao.textContent;
-          botao.textContent = "Adicionado ✓";
-          setTimeout(function () { botao.textContent = original; }, 1200);
-        });
-      });
-
-      gradeProdutos.querySelectorAll(".btn-favoritar").forEach(function (botao) {
-        var id = botao.dataset.id;
-        if (produtoEstaFavoritado(id)) botao.textContent = "♥ Favoritado";
-        botao.addEventListener("click", function () {
-          var favoritado = alternarFavorito(id, botao.dataset.nome, parseFloat(botao.dataset.preco), botao.dataset.imagem);
-          botao.textContent = favoritado ? "♥ Favoritado" : "♡ Favoritar";
-        });
+      gradeProdutos.innerHTML = '<p>Carregando produtos da coleção...</p>';
+      apiRequest('/products').then(function (produtos) {
+        var filtrados = produtos.filter(p => p.collection_id === selecionada.id);
+        gcLigarCatalogo(gradeProdutos, filtrados);
+        gradeProdutos.innerHTML = filtrados.length
+          ? filtrados.map(gcCartaoProduto).join('')
+          : '<p>Não há produtos disponíveis nesta coleção.</p>';
+      }).catch(function (err) {
+        gradeProdutos.innerHTML = '<p class="mensagem-erro">Não foi possível carregar: ' + escapeHtml(err.message) + '</p>';
       });
     })();

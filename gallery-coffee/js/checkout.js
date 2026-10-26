@@ -1,339 +1,86 @@
-/* ============================================================
-   GALLERY COFFEE — js/checkout.js
-   ------------------------------------------------------------
-   Controla as 5 etapas do checkout, valida os campos,
-   calcula o resumo e envia o pedido para o backend.
-   ============================================================ */
-
-var etapaAtual = 1;
-var totalEtapas = 5;
-
-// ============================================================
-// CONTROLE DAS ETAPAS
-// ============================================================
-
-function mostrarEtapa(numero) {
-  for (var i = 1; i <= totalEtapas; i++) {
-    document.getElementById("passo-" + i).classList.remove("ativo");
-  }
-
-  document.getElementById("passo-" + numero).classList.add("ativo");
-
-  var itensEtapa = document.querySelectorAll(".etapa-item");
-
-  itensEtapa.forEach(function (item) {
-    if (parseInt(item.getAttribute("data-etapa")) === numero) {
-      item.classList.add("etapa-atual");
-    } else {
-      item.classList.remove("etapa-atual");
-    }
-  });
-
-  document.getElementById("botao-voltar-etapa").style.visibility =
-    numero === 1 ? "hidden" : "visible";
-
-  document.getElementById("botao-avancar-etapa").style.display =
-    numero === totalEtapas ? "none" : "inline-block";
-
-  document.getElementById("botao-finalizar-pedido").style.display =
-    numero === totalEtapas ? "inline-block" : "none";
-
-  document.getElementById("erro-checkout").textContent = "";
-
-  if (numero === totalEtapas) {
-    montarRevisao();
-  }
+/* Checkout escolar: produtos, cupons e totais sao validados novamente no backend. */
+let etapaAtual=1,finalizando=false;
+const errorCheckout=document.getElementById('erro-checkout');
+const botaoFinalizar=document.getElementById('botao-finalizar-pedido');
+let descontoPercent=0;
+function metodoEntrega() {
+  return document.querySelector('input[name="entrega"]:checked')?.value === 'expressa' ? 'expressa':'normal';
 }
-
-// ============================================================
-// VALIDACAO DAS ETAPAS
-// ============================================================
-
-function validarEtapaAtual() {
-  if (etapaAtual === 1) {
-    var nome = document.getElementById("ck-nome").value;
-    var email = document.getElementById("ck-email").value;
-
-    if (!nome || !email) {
-      document.getElementById("erro-checkout").textContent =
-        "Preencha nome e e-mail.";
-
-      return false;
-    }
+function mostrarEtapa(n) {
+  etapaAtual=n;
+  for(let i=1;i<=5;i++)document.getElementById('passo-'+i).classList.toggle('ativo',i===n);
+  document.querySelectorAll('.etapa-item').forEach(el=>el.classList.toggle('etapa-atual',Number(el.dataset.etapa)===n));
+  document.getElementById('botao-voltar-etapa').style.visibility=n===1?'hidden':'visible';
+  document.getElementById('botao-avancar-etapa').style.display=n===5?'none':'inline-block';
+  botaoFinalizar.style.display=n===5?'inline-block':'none';
+  errorCheckout.textContent='';
+  if(n===5) montarRevisao();
+}
+function validar() {
+  if(etapaAtual===1 && (!document.getElementById('ck-nome').value.trim() || !document.getElementById('ck-email').value.trim())) {
+    gcAviso(errorCheckout,'Preencha nome e e-mail.',true);return false;
   }
-
-  if (etapaAtual === 2) {
-    var cep = document.getElementById("ck-cep").value;
-    var rua = document.getElementById("ck-rua").value;
-    var cidade = document.getElementById("ck-cidade").value;
-
-    if (!cep || !rua || !cidade) {
-      document.getElementById("erro-checkout").textContent =
-        "Preencha CEP, rua e cidade.";
-
-      return false;
-    }
+  if(etapaAtual===2 && ['ck-cep','ck-rua','ck-cidade'].some(id=>!document.getElementById(id).value.trim())) {
+    gcAviso(errorCheckout,'Preencha CEP, rua e cidade.',true);return false;
   }
-
   return true;
 }
-
-// ============================================================
-// RESUMO DO PEDIDO
-// ============================================================
-
-function montarRevisao() {
-  var carrinho = pegarCarrinho();
-  var resumo = document.getElementById("resumo-revisao");
-  var subtotal = calcularTotalCarrinho();
-
-  var cupomTexto = localStorage.getItem("cupomAplicado");
-  var desconto = 0;
-
-  if (cupomTexto) {
-    try {
-      var cupom = JSON.parse(cupomTexto);
-
-      if (cupom && Number.isFinite(Number(cupom.desconto))) {
-        desconto = (subtotal * Number(cupom.desconto)) / 100;
-      }
-    } catch (erro) {
-      console.warn("Cupom invalido:", erro);
-    }
-  }
-
-  var entregaSelecionada = document.querySelector(
-    "input[name='entrega']:checked"
-  ).value;
-
-  var frete = entregaSelecionada === "expressa"
-    ? 24.90
-    : (subtotal >= 200 ? 0 : 14.90);
-
-  var total = subtotal - desconto + frete;
-
-  var html = "<ul class='lista-simples'>";
-
-  for (var i = 0; i < carrinho.length; i++) {
-    html += "<li>" +
-      carrinho[i].quantidade + "x " +
-      carrinho[i].nome + " — " +
-      formatarPreco(carrinho[i].preco * carrinho[i].quantidade) +
-      "</li>";
-  }
-
-  html += "<li>Frete: " +
-    (frete === 0 ? "Grátis" : formatarPreco(frete)) +
-    "</li>";
-
-  if (desconto > 0) {
-    html += "<li>Desconto: -" +
-      formatarPreco(desconto) +
-      "</li>";
-  }
-
-  html += "</ul>";
-
-  resumo.innerHTML = html;
-
-  document.getElementById("revisao-total").textContent =
-    formatarPreco(total);
-
-  resumo.setAttribute("data-total-final", total);
+function montarRevisao(){
+  const cart=pegarCarrinho(),subtotal=calcularTotalCarrinho();
+  const desconto=Math.round(subtotal*descontoPercent)/100;
+  const frete=metodoEntrega()==='expressa'?24.90:(subtotal>=200?0:14.90);
+  const resumo=document.getElementById('resumo-revisao');
+  resumo.innerHTML='<ul class="lista-simples">'+cart.map(i=>`<li>${Number(i.quantidade)}x ${gcEsc(i.nome)} — ${gcMoeda(i.preco*i.quantidade)}</li>`).join('')+
+    `<li>Entrega: ${gcMoeda(frete)}</li>`+
+    (desconto?`<li>Desconto previsto: − ${gcMoeda(desconto)}</li>`:'')+'</ul>';
+  document.getElementById('revisao-total').textContent=gcMoeda(subtotal-desconto+frete);
 }
-
-// ============================================================
-// AVANCAR ETAPA
-// ============================================================
-
-document.getElementById("botao-avancar-etapa")
-  .addEventListener("click", function () {
-
-    if (!validarEtapaAtual()) {
-      return;
-    }
-
-    etapaAtual++;
-
-    mostrarEtapa(etapaAtual);
-  });
-
-// ============================================================
-// VOLTAR ETAPA
-// ============================================================
-
-document.getElementById("botao-voltar-etapa")
-  .addEventListener("click", function () {
-
-    if (etapaAtual === 1) {
-      return;
-    }
-
-    etapaAtual--;
-
-    mostrarEtapa(etapaAtual);
-  });
-
-// ============================================================
-// CAMPOS DE PAGAMENTO
-// ============================================================
-
-var radiosPagamento = document.querySelectorAll(
-  "input[name='pagamento']"
-);
-
-radiosPagamento.forEach(function (radio) {
-  radio.addEventListener("change", function () {
-
-    document.getElementById("campos-cartao").style.display =
-      radio.value === "cartao" && radio.checked
-        ? "block"
-        : "none";
-  });
+document.getElementById('botao-avancar-etapa').addEventListener('click',()=>{if(validar()&&etapaAtual<5)mostrarEtapa(etapaAtual+1)});
+document.getElementById('botao-voltar-etapa').addEventListener('click',()=>{if(etapaAtual>1)mostrarEtapa(etapaAtual-1)});
+document.querySelectorAll('input[name="entrega"]').forEach(b=>b.addEventListener('change',montarRevisao));
+const me=pegarUsuarioLogado();
+if(me){document.getElementById('ck-nome').value=me.nome||'';document.getElementById('ck-email').value=me.email||'';}
+(async()=>{
+  // Verificacao de cupom sempre vem da API. Nao confiar em desconto salvo localmente.
+  const antigo=sessionStorage.getItem('cupomAplicado');
+  if(antigo){try{const c=JSON.parse(antigo);if(c.code){const dado=await apiRequest('/coupons/'+encodeURIComponent(c.code));descontoPercent=dado.discountPercent;}}catch{sessionStorage.removeItem('cupomAplicado');}}
+  try {
+    const produtos=await apiRequest('/products');
+    const index=new Map(produtos.map(p=>[p.id,p]));
+    let invalidos=[];
+    const cart=pegarCarrinho().filter(i=>{if(!index.has(i.id)||index.get(i.id).stock<i.quantidade){invalidos.push(i.nome);return false;}return true;});
+    cart.forEach(i=>{i.preco=Number(index.get(i.id).price);i.nome=index.get(i.id).name;});
+    if(invalidos.length){gcAviso(errorCheckout,'Alguns produtos foram removidos por indisponibilidade: '+invalidos.join(', '),true);}
+    salvarCarrinho(cart);
+    if(!cart.length && !invalidos.length)location.replace('carrinho.html');
+    if(!cart.length) botaoFinalizar.disabled=true;
+    if(etapaAtual===5)montarRevisao();
+  } catch(e){gcAviso(errorCheckout,'Não foi possível conferir preços e estoque: '+e.message,true);botaoFinalizar.disabled=true;}
+})();
+botaoFinalizar.addEventListener('click',async function(){
+  if(finalizando)return;
+  if(!sessionStorage.getItem('gc_token')){gcAviso(errorCheckout,'Entre na sua conta para finalizar.',true);return;}
+  if(!pegarCarrinho().length){gcAviso(errorCheckout,'Carrinho vazio.',true);return;}
+  finalizando=true;this.disabled=true;this.textContent='Registrando pedido...';
+  try {
+    const endereco={};for(const key of ['cep','rua','numero','bairro','cidade','estado'])
+      endereco[key]=document.getElementById('ck-'+key).value.trim();
+    const antigo=sessionStorage.getItem('cupomAplicado');
+    let couponCode='';
+    if(antigo){try{couponCode=JSON.parse(antigo).code||'';}catch{}}
+    const body={ items:pegarCarrinho().map(i=>({id:i.id,quantity:Number(i.quantidade)})),
+      address:endereco,delivery:metodoEntrega(),couponCode };
+    const order=await apiRequest('/orders',{method:'POST',body:JSON.stringify(body)});
+    // NUNCA chamar API de pagamento real: a entrega e uma demonstracao escolar.
+    let sim='ok';
+    try{
+      const method=document.querySelector('input[name="pagamento"]:checked')?.value||'pix';
+      await apiRequest('/orders/'+encodeURIComponent(order.orderId)+'/simulate-payment',{
+        method:'POST',body:JSON.stringify({method})});
+    }catch(e){console.warn('Pedido criado; simulacao ainda pendente:',e.message);sim='pendente';}
+    esvaziarCarrinho();sessionStorage.removeItem('cupomAplicado');
+    location.href='pedido-sucesso.html?id='+encodeURIComponent(order.orderId)+(sim==='pendente'?'&simulacao=pendente':'');
+  }catch(e){gcAviso(errorCheckout,e.message||'Não foi possível concluir o pedido.',true);finalizando=false;this.disabled=false;this.textContent='Finalizar pedido';}
 });
-
-// ============================================================
-// FINALIZAR PEDIDO
-// ============================================================
-
-document.getElementById("botao-finalizar-pedido")
-  .addEventListener("click", async function () {
-
-    const carrinho = pegarCarrinho();
-
-    const erro = document.getElementById("erro-checkout");
-
-    erro.textContent = "";
-
-    // Verifica se o usuario esta logado
-    if (!sessionStorage.getItem("gc_token")) {
-      erro.textContent =
-        "Entre na sua conta para fazer o pedido.";
-
-      return;
-    }
-
-    // Verifica se existem produtos
-    if (!carrinho.length) {
-      erro.textContent = "Carrinho vazio.";
-
-      return;
-    }
-
-    // Dados do endereco
-    const endereco = {
-      cep: document.getElementById("ck-cep").value.trim(),
-      rua: document.getElementById("ck-rua").value.trim(),
-      numero: document.getElementById("ck-numero").value.trim(),
-      bairro: document.getElementById("ck-bairro").value.trim(),
-      cidade: document.getElementById("ck-cidade").value.trim(),
-      estado: document.getElementById("ck-estado").value.trim()
-    };
-
-    // ========================================================
-    // CORRECAO DO ERRO "PEDIDO INVALIDO"
-    // ========================================================
-
-    const entregaSelecionada = document.querySelector(
-      'input[name="entrega"]:checked'
-    ).value;
-
-    // Backend aceita somente "normal" ou "expressa"
-    const entrega = entregaSelecionada === "expressa"
-      ? "expressa"
-      : "normal";
-
-    // ========================================================
-    // PREPARAR DADOS DO PEDIDO
-    // ========================================================
-
-    const dadosPedido = {
-      items: carrinho.map(function (item) {
-        return {
-          id: item.id,
-          quantity: Number(item.quantidade)
-        };
-      }),
-
-      address: endereco,
-
-      delivery: entrega
-    };
-
-    console.log("Enviando pedido:", dadosPedido);
-
-    this.disabled = true;
-
-    try {
-
-      // Cria o pedido no Supabase atraves do backend
-      const order = await apiRequest("/orders", {
-        method: "POST",
-        body: JSON.stringify(dadosPedido)
-      });
-
-      console.log("Pedido criado:", order);
-
-      // ======================================================
-      // PAGAMENTO NAO CONFIGURADO
-      // ======================================================
-
-      if (!order.paymentEnabled) {
-
-        alert(
-          "Pedido criado com sucesso!\n\n" +
-          "Numero do pedido: " + order.orderId + "\n" +
-          "Total: " + formatarPreco(order.total) + "\n\n" +
-          "Pagamento ainda nao habilitado.\n" +
-          "Nenhuma cobranca foi realizada."
-        );
-
-        return;
-      }
-
-      // ======================================================
-      // PAGAMENTO CONFIGURADO
-      // ======================================================
-
-      const payment = await apiRequest(
-        "/orders/" + encodeURIComponent(order.orderId) + "/payment",
-        {
-          method: "POST"
-        }
-      );
-
-      if (!payment.checkoutUrl) {
-        throw new Error(
-          "Nao foi possivel obter o link de pagamento."
-        );
-      }
-
-      window.location.href = payment.checkoutUrl;
-
-    } catch (e) {
-
-      console.error("Erro ao finalizar pedido:", e);
-
-      erro.textContent =
-        e.message || "Erro ao finalizar pedido.";
-
-    } finally {
-
-      this.disabled = false;
-
-    }
-  });
-
-// ============================================================
-// VERIFICAR CARRINHO
-// ============================================================
-
-if (pegarCarrinho().length === 0) {
-  window.location.href = "carrinho.html";
-}
-
-// ============================================================
-// INICIAR CHECKOUT
-// ============================================================
-
-mostrarEtapa(etapaAtual);
+if(!pegarCarrinho().length)location.replace('carrinho.html');
+mostrarEtapa(1);

@@ -1,107 +1,51 @@
-/* ============================================================
-   GALLERY COFFEE — js/perfil.js
-   ------------------------------------------------------------
-   Se ninguém estiver logado, manda pra página de login.
-   As 3 abas (Perfil, Pedidos, Endereços) já existem no HTML —
-   este arquivo só troca qual delas fica visível, e preenche
-   os dados de quem está logado.
-   ============================================================ */
-
-var usuario = pegarUsuarioLogado();
-
-if (!usuario) {
-  alert("Faça login para acessar sua conta.");
-  window.location.href = "login.html";
-}
-
-// --------- preenche a aba "Perfil" ---------
-if (usuario) {
-  document.getElementById("perfil-nome").textContent = usuario.nome;
-  document.getElementById("perfil-email").textContent = usuario.email;
-  document.getElementById("perfil-tipo").textContent = usuario.tipo === "administrador" ? "Administrador" : "Cliente";
-}
-
-// --------- troca de abas ---------
-var botoesAba = document.querySelectorAll(".botao-aba");
-botoesAba.forEach(function (botao) {
-  botao.addEventListener("click", function () {
-    var abaEscolhida = botao.getAttribute("data-aba");
-
-    document.querySelectorAll(".botao-aba").forEach(function (b) { b.classList.remove("ativa"); });
-    document.querySelectorAll(".conteudo-aba").forEach(function (c) { c.classList.remove("ativa"); });
-
-    botao.classList.add("ativa");
-    document.getElementById("aba-" + abaEscolhida).classList.add("ativa");
-  });
-});
-
-// --------- aba "Meus pedidos" ---------
-function mostrarPedidos() {
-  if (!usuario) return;
-
-  var todosPedidos = pegarPedidos();
-  var meusPedidos = [];
-
-  for (var i = 0; i < todosPedidos.length; i++) {
-    if (todosPedidos[i].clienteEmail === usuario.email) {
-      meusPedidos.push(todosPedidos[i]);
+(async function () {
+  const token = sessionStorage.getItem('gc_token');
+  if (!token) { location.replace('login.html');return; }
+  const lista = document.getElementById('lista-pedidos');
+  const vazio = document.getElementById('pedidos-vazio');
+  const params = new URLSearchParams(location.search);
+  document.querySelectorAll('.botao-aba').forEach(botao => botao.addEventListener('click', () => {
+    document.querySelectorAll('.botao-aba').forEach(b => b.classList.remove('ativa'));
+    document.querySelectorAll('.conteudo-aba').forEach(b => b.classList.remove('ativa'));
+    botao.classList.add('ativa');
+    document.getElementById('aba-'+botao.dataset.aba).classList.add('ativa');
+  }));
+  if (params.get('aba') === 'pedidos') document.querySelector('[data-aba="pedidos"]').click();
+  try {
+    const me = await apiRequest('/me');
+    document.getElementById('perfil-nome').textContent = me.name || '—';
+    document.getElementById('perfil-email').textContent = me.email || '—';
+    document.getElementById('perfil-tipo').textContent = me.role === 'admin' ? 'Administrador' : 'Cliente';
+    sessionStorage.setItem('usuarioLogado',JSON.stringify({id:me.id,nome:me.name,email:me.email,tipo:me.role==='admin'?'administrador':'cliente'}));
+    const enderecoChave='enderecoPrincipal:'+me.id;
+    try {
+      const endereco = JSON.parse(localStorage.getItem(enderecoChave)||'{}');
+      for(const campo of ['cep','rua','numero','bairro','cidade','estado'])
+        document.getElementById('end-'+campo).value = endereco[campo] || '';
+    } catch{}
+    document.getElementById('form-endereco-perfil').addEventListener('submit',e=>{
+      e.preventDefault();const endereco={};
+      for(const campo of ['cep','rua','numero','bairro','cidade','estado'])
+        endereco[campo]=document.getElementById('end-'+campo).value.trim();
+      localStorage.setItem(enderecoChave,JSON.stringify(endereco));
+      document.getElementById('endereco-salvo').style.display='block';
+    });
+    lista.innerHTML='<p class="gc-loading">Carregando seus pedidos...</p>';
+    const pedidos=await apiRequest('/orders');
+    vazio.style.display = pedidos.length ? 'none' : 'block';
+    lista.innerHTML = pedidos.map(p => `<article class="caixa gc-pedido">
+      <div class="gc-pedido-topo"><div><span class="gc-eyebrow">Pedido #${gcEsc(p.id.slice(0,8).toUpperCase())}</span>
+      <p class="gc-muted">${gcData(p.created_at)}</p></div>
+      <span class="gc-selo">${gcEsc(gcStatus(p.status,p.simulated))}</span></div>
+      <div class="gc-itens">${(p.order_items||[]).map(i=>`<div><span>${Number(i.quantity)}× ${gcEsc(i.name)}</span><strong>${gcMoeda(Number(i.unit_price)*i.quantity)}</strong></div>`).join('')}</div>
+      ${Number(p.discount)>0?`<p class="gc-muted">Cupom ${gcEsc(p.coupon_code)}: − ${gcMoeda(p.discount)}</p>`:''}
+      <div class="gc-pedido-total"><span>Total</span><strong>${gcMoeda(p.total)}</strong></div>
+      <a class="gc-link" href="pedido-sucesso.html?id=${encodeURIComponent(p.id)}">Ver detalhes do pedido</a>
+      </article>`).join('');
+  } catch(e) {
+    if(/Token invalido|Autenticacao necessaria/i.test(e.message)) {
+      limparSessaoGallery();location.replace('login.html');return;
     }
+    gcAviso(lista,'Não foi possível carregar seu histórico: '+e.message,true);
   }
-
-  var lista = document.getElementById("lista-pedidos");
-
-  if (meusPedidos.length === 0) {
-    document.getElementById("pedidos-vazio").style.display = "block";
-    return;
-  }
-
-  var html = "";
-  for (var j = meusPedidos.length - 1; j >= 0; j--) {
-    var pedido = meusPedidos[j];
-    var dataFormatada = new Date(pedido.data).toLocaleDateString("pt-BR");
-
-    html += "<div class='caixa pedido-admin'>";
-    html += "<p style='font-size:12px; color:#6E6152;'>Pedido #" + pedido.id.slice(-6) + " — " + dataFormatada + " — status: " + pedido.status + "</p>";
-    for (var k = 0; k < pedido.itens.length; k++) {
-      html += "<p>" + pedido.itens[k].quantidade + "x " + pedido.itens[k].nome + "</p>";
-    }
-    html += "<p style='font-weight:bold; color:#9C7A1B;'>Total: " + formatarPreco(pedido.total) + "</p>";
-    html += "</div>";
-  }
-
-  lista.innerHTML = html;
-}
-
-mostrarPedidos();
-
-// --------- aba "Endereços" ---------
-function carregarEnderecoSalvo() {
-  var dados = localStorage.getItem("enderecoPrincipal");
-  if (!dados) return;
-
-  var endereco = JSON.parse(dados);
-  document.getElementById("end-cep").value = endereco.cep || "";
-  document.getElementById("end-rua").value = endereco.rua || "";
-  document.getElementById("end-numero").value = endereco.numero || "";
-  document.getElementById("end-bairro").value = endereco.bairro || "";
-  document.getElementById("end-cidade").value = endereco.cidade || "";
-  document.getElementById("end-estado").value = endereco.estado || "";
-}
-
-carregarEnderecoSalvo();
-
-document.getElementById("form-endereco-perfil").addEventListener("submit", function (evento) {
-  evento.preventDefault();
-
-  var endereco = {
-    cep: document.getElementById("end-cep").value,
-    rua: document.getElementById("end-rua").value,
-    numero: document.getElementById("end-numero").value,
-    bairro: document.getElementById("end-bairro").value,
-    cidade: document.getElementById("end-cidade").value,
-    estado: document.getElementById("end-estado").value
-  };
-
-  localStorage.setItem("enderecoPrincipal", JSON.stringify(endereco));
-  document.getElementById("endereco-salvo").style.display = "block";
-});
+})();

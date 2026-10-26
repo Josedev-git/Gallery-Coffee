@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Gallery Coffee</title>
-  <link rel="stylesheet" href="style.css?v=20261009mobile3">
+  <link rel="stylesheet" href="style.css?v=20261026final">
   <link rel="icon" href="assets/logo.png">
 </head>
 
@@ -137,91 +137,6 @@
     </section>
 
     <section class="secao">
-      <h2>Produtos mais vendidos</h2>
-      <div class="grade">
-
-        <div class="cartao">
-          <a href="produto.html?id=pr1">
-            <img src="assets/monafe.jpg" alt="Monafé">
-            <div class="info">
-              <h3>Monafé</h3>
-              <p class="preco">R$ 99,90</p>
-            </div>
-          </a>
-          <button
-            class="botao btn-adicionar"
-            data-id="pr1"
-            data-nome="Monafé"
-            data-preco="99.90"
-            data-imagem="assets/monafe.jpg">
-            Adicionar ao carrinho
-          </button>
-          <button
-            class="botao btn-favoritar"
-            data-id="pr1"
-            data-nome="Monafé"
-            data-preco="99.90"
-            data-imagem="assets/monafe.jpg">
-            ♡ Favoritar
-          </button>
-        </div>
-
-        <div class="cartao">
-          <a href="produto.html?id=pr3">
-            <img src="assets/van-coffee.jpg" alt="Van Coffee">
-            <div class="info">
-              <h3>Van Coffee</h3>
-              <p class="preco">R$ 99,90</p>
-            </div>
-          </a>
-          <button
-            class="botao btn-adicionar"
-            data-id="pr3"
-            data-nome="Van Coffee"
-            data-preco="99.90"
-            data-imagem="assets/van-coffee.jpg">
-            Adicionar ao carrinho
-          </button>
-          <button
-            class="botao btn-favoritar"
-            data-id="pr3"
-            data-nome="Van Coffee"
-            data-preco="99.90"
-            data-imagem="assets/van-coffee.jpg">
-            ♡ Favoritar
-          </button>
-        </div>
-
-        <div class="cartao">
-          <a href="produto.html?id=pr5">
-            <img src="assets/fridachinoo.jpg" alt="Fridachinoo">
-            <div class="info">
-              <h3>Fridachinoo</h3>
-              <p class="preco">R$ 99,90</p>
-            </div>
-          </a>
-          <button
-            class="botao btn-adicionar"
-            data-id="pr5"
-            data-nome="Fridachinoo"
-            data-preco="99.90"
-            data-imagem="assets/fridachinoo.jpg">
-            Adicionar ao carrinho
-          </button>
-          <button
-            class="botao btn-favoritar"
-            data-id="pr5"
-            data-nome="Fridachinoo"
-            data-preco="99.90"
-            data-imagem="assets/fridachinoo.jpg">
-            ♡ Favoritar
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="secao">
       <div class="destaque">
         <h2 style="color:#ffffff; border:none;">A experiência Gallery Coffee</h2>
         <p>
@@ -242,15 +157,25 @@
       </article>
     </section>
 
-    <footer class="rodape">
-      <hr>
-      <p>Gallery Coffee — projeto de estudo (front-end)</p>
+    <footer class="rodape gc-rodape">
+      <div class="gc-footer-grid">
+        <div><a class="gc-footer-logo" href="index.html">Gallery Coffee</a>
+          <p>Arte, café e criatividade em cada detalhe.</p>
+          <span class="gc-footer-note">Projeto acadêmico · Ambiente demonstrativo</span></div>
+        <div><h3>Explore</h3><a href="produtos.html">Produtos</a><a href="colecoes.html">Coleções</a><a href="sobre.html">Nossa história</a></div>
+        <div><h3>Sua conta</h3><a href="perfil.html?aba=pedidos">Meus pedidos</a><a href="carrinho.html">Meu carrinho</a><a href="login.html">Entrar / cadastrar</a></div>
+      </div>
+      <div class="gc-footer-bottom"><span>© 2026 Gallery Coffee. Projeto semestral.</span>
+        <span>Sem vendas, cobranças ou entregas reais.</span></div>
     </footer>
 
   </div>
 
   <script src="js/dados.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=20261026sessao"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/home-catalogo.js"></script>
 </body>
 
 </html>

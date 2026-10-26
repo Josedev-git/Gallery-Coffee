@@ -1,54 +1,28 @@
-/* ============================================================
-   GALLERY COFFEE — js/produtos.js
-   ------------------------------------------------------------
-   Cuida só da página produtos.html: busca por nome e filtro por
-   coleção. Repare que o JavaScript NUNCA cria um cartão novo —
-   ele só decide quais dos cartões que já existem no HTML ficam
-   visíveis (display none) ou não.
-   ============================================================ */
-
-var campoBusca = document.getElementById("campo-busca");
-var botoesFiltro = document.querySelectorAll(".botao-filtro");
-var cartoesProduto = document.querySelectorAll(".produto-item");
-var mensagemVazio = document.getElementById("mensagem-vazio");
-
-var filtroAtual = "todas";
-
-function aplicarFiltros() {
-  var termoBusca = campoBusca.value.toLowerCase();
-  var algumVisivel = false;
-
-  cartoesProduto.forEach(function (cartao) {
-    var nomeProduto = cartao.getAttribute("data-nome");
-    var colecaoProduto = cartao.getAttribute("data-colecao");
-
-    var passaNoFiltro = (filtroAtual === "todas" || colecaoProduto === filtroAtual);
-    var passaNaBusca = nomeProduto.indexOf(termoBusca) !== -1;
-
-    if (passaNoFiltro && passaNaBusca) {
-      cartao.style.display = "block";
-      algumVisivel = true;
-    } else {
-      cartao.style.display = "none";
+(async function () {
+  const grade = document.getElementById('grade-produtos-api');
+  const busca = document.getElementById('campo-busca');
+  const filtros = [...document.querySelectorAll('.botao-filtro')];
+  const vazio = document.getElementById('mensagem-vazio');
+  let filtro = 'todas';
+  grade.innerHTML = '<p class="gc-loading">Carregando produtos do catálogo...</p>';
+  try {
+    const produtos = await apiRequest('/products');
+    gcLigarCatalogo(grade, produtos);
+    function renderizar() {
+      const termo = busca.value.trim().toLocaleLowerCase('pt-BR');
+      const encontrados = produtos.filter(p =>
+        (filtro === 'todas' || p.collection_id === filtro) &&
+        p.name.toLocaleLowerCase('pt-BR').includes(termo));
+      grade.innerHTML = encontrados.map(gcCartaoProduto).join('');
+      vazio.style.display = encontrados.length ? 'none' : 'block';
     }
-  });
-
-  mensagemVazio.style.display = algumVisivel ? "none" : "block";
-}
-
-// busca: roda toda vez que a pessoa digita
-campoBusca.addEventListener("input", aplicarFiltros);
-
-// filtro de coleção: roda quando clica em um dos botões
-botoesFiltro.forEach(function (botao) {
-  botao.addEventListener("click", function () {
-    // tira o estilo "ativo" de todos os botões e coloca só no que foi clicado
-    botoesFiltro.forEach(function (b) {
-      b.classList.remove("ativo");
-    });
-    botao.classList.add("ativo");
-
-    filtroAtual = botao.getAttribute("data-colecao");
-    aplicarFiltros();
-  });
-});
+    busca.addEventListener('input', renderizar);
+    filtros.forEach(botao => botao.addEventListener('click', () => {
+      filtros.forEach(b => b.classList.remove('ativo'));
+      botao.classList.add('ativo'); filtro = botao.dataset.colecao; renderizar();
+    }));
+    renderizar();
+  } catch (e) {
+    grade.innerHTML = `<p class="mensagem-erro">Não foi possível carregar os produtos: ${gcEsc(e.message)}.</p>`;
+  }
+})();

@@ -11,10 +11,10 @@
      - pedidos (guardar/ler as compras já finalizadas)
      - formatarPreco (transformar 89.9 em "R$ 89,90")
 
-   Tudo isso fica guardado no localStorage, que é uma "gaveta"
-   de dados dentro do próprio navegador. Não é um banco de dados
-   de verdade — é o suficiente para este projeto funcionar sem
-   precisar de um servidor.
+   Carrinho, cupom e dados da conta pertencem somente à ABA atual:
+   ficam no sessionStorage e desaparecem ao encerrar a aba normalmente.
+   Favoritos e dados legados continuam locais; pedidos reais são da API.
+   Essa separação evita que outro usuário herde uma compra ao entrar.
    ============================================================ */
 
 
@@ -27,18 +27,37 @@ function formatarPreco(numero) {
 
 
 /* ------------------------------------------------------------
-   CARRINHO
+   SESSAO DO NAVEGADOR
+   ------------------------------------------------------------ */
+// Limpa dados persistentes da versão anterior. Não migramos o carrinho
+// antigo: a regra agora é não carregar produtos de sessões anteriores.
+localStorage.removeItem("carrinho");
+localStorage.removeItem("cupomAplicado");
+localStorage.removeItem("usuarioLogado");
+
+function limparSessaoGallery() {
+  ["gc_token", "usuarioLogado", "carrinho", "cupomAplicado"].forEach(function (chave) {
+    sessionStorage.removeItem(chave);
+    localStorage.removeItem(chave); // compatibilidade com versões antigas
+  });
+  atualizarContadorCarrinho();
+}
+
+/* ------------------------------------------------------------
+   CARRINHO (somente durante esta aba/sessao)
    ------------------------------------------------------------ */
 function pegarCarrinho() {
-  var dados = localStorage.getItem("carrinho");
-  if (dados) {
-    return JSON.parse(dados);
+  try {
+    var carrinho = JSON.parse(sessionStorage.getItem("carrinho") || "[]");
+    return Array.isArray(carrinho) ? carrinho : [];
+  } catch (e) {
+    sessionStorage.removeItem("carrinho");
+    return [];
   }
-  return [];
 }
 
 function salvarCarrinho(carrinho) {
-  localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  sessionStorage.setItem("carrinho", JSON.stringify(carrinho));
   atualizarContadorCarrinho();
 }
 
@@ -92,7 +111,7 @@ function calcularTotalCarrinho() {
 }
 
 function esvaziarCarrinho() {
-  localStorage.removeItem("carrinho");
+  sessionStorage.removeItem("carrinho");
   atualizarContadorCarrinho();
 }
 
@@ -179,16 +198,21 @@ function salvarUsuarios(usuarios) {
 }
 
 function pegarUsuarioLogado() {
-  var dados = localStorage.getItem("usuarioLogado");
-  if (dados) {
-    return JSON.parse(dados);
+  // Sem token, nunca mostrar alguém como logado (mesmo com dados antigos).
+  if (!sessionStorage.getItem("gc_token")) {
+    sessionStorage.removeItem("usuarioLogado");
+    return null;
   }
-  return null;
+  try {
+    return JSON.parse(sessionStorage.getItem("usuarioLogado") || "null");
+  } catch (e) {
+    sessionStorage.removeItem("usuarioLogado");
+    return null;
+  }
 }
 
 function fazerLogout() {
-  localStorage.removeItem("usuarioLogado");
-  sessionStorage.removeItem("gc_token");
+  limparSessaoGallery();
   window.location.href = "index.html";
 }
 
@@ -205,16 +229,21 @@ function atualizarLinkDeConta() {
 
   if (linkConta) {
     linkConta.setAttribute("href", usuario ? "perfil.html" : "login.html");
-    linkConta.setAttribute("title", usuario ? "Minha conta (" + usuario.nome.split(" ")[0] + ")" : "Entrar");
+    linkConta.setAttribute("title", usuario ? "Minha conta (" + (usuario.nome || "Conta").split(" ")[0] + ")" : "Entrar");
   }
 
-  if (linkContaMenu && usuario) {
-    linkContaMenu.textContent = "Sair (" + usuario.nome.split(" ")[0] + ")";
-    linkContaMenu.setAttribute("href", "#");
-    linkContaMenu.addEventListener("click", function (evento) {
-      evento.preventDefault();
-      fazerLogout();
-    });
+  if (linkContaMenu) {
+    if (usuario) {
+      linkContaMenu.textContent = "Sair (" + (usuario.nome || "Conta").split(" ")[0] + ")";
+      linkContaMenu.setAttribute("href", "#");
+      linkContaMenu.addEventListener("click", function (evento) {
+        evento.preventDefault();
+        fazerLogout();
+      });
+    } else {
+      linkContaMenu.textContent = "Entrar";
+      linkContaMenu.setAttribute("href", "login.html");
+    }
   }
 
   if (linkAdmin) {

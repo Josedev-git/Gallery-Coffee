@@ -7,6 +7,10 @@ import rateLimit from 'express-rate-limit';
 import { createClient } from '@supabase/supabase-js';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
+// Modo escolar: nenhuma transacao real. Para producao, definir DEMO_MODE=false.
+const DEMO_MODE = process.env.DEMO_MODE !== 'false';
+const moeda = n => Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+
 // VARIAVEIS DE AMBIENTE
 const required = [
   'SUPABASE_URL',
@@ -272,6 +276,7 @@ app.post('/api/orders', user, wrap(async (req, res) => {
   const items = req.body.items;
   const address = req.body.address;
   const delivery = req.body.delivery;
+  const couponCode = typeof req.body.couponCode === 'string' ? req.body.couponCode.trim().toUpperCase() : '';
 
   if (
     !Array.isArray(items) ||
@@ -348,9 +353,20 @@ app.post('/api/orders', user, wrap(async (req, res) => {
     ? 24.9
     : subtotal >= 200 ? 0 : 14.9;
 
-  const total = Math.round(
-    (subtotal + shipping) * 100
-  ) / 100;
+  let desconto = 0;
+  if (couponCode) {
+    if (!/^[A-Z0-9_-]{3,24}$/.test(couponCode)) {
+      return res.status(400).json({ error: 'Cupom invalido' });
+    }
+    const { data: coupon, error: couponError } = await adminDb
+      .from('coupons').select('*').eq('code', couponCode).maybeSingle();
+    if (couponError) throw couponError;
+    if (!coupon || !coupon.active || (coupon.expires_at && Date.parse(coupon.expires_at) <= Date.now())) {
+      return res.status(400).json({ error: 'Cupom invalido ou expirado' });
+    }
+    desconto = moeda(subtotal * coupon.discount_percent / 100);
+  }
+  const total = moeda(subtotal - desconto + shipping);
 
   const order = dbCheck(
     await adminDb
@@ -359,6 +375,9 @@ app.post('/api/orders', user, wrap(async (req, res) => {
         user_id: req.user.id,
         subtotal,
         shipping,
+        discount: desconto,
+        coupon_code: couponCode || null,
+        delivery,
         total,
         address,
         status: 'pending'
@@ -389,12 +408,48 @@ app.post('/api/orders', user, wrap(async (req, res) => {
     orderId: order.id,
     status: 'pending',
     total,
-    paymentEnabled: !!process.env.MP_ACCESS_TOKEN
+    discount: desconto,
+    demoMode: DEMO_MODE,
+    paymentEnabled: !!process.env.MP_ACCESS_TOKEN && !DEMO_MODE
   });
+}));
+
+// CONFIRMACAO SIMULADA: sem dados de cartao, PIX ou cobranca financeira.
+app.post('/api/orders/:id/simulate-payment', user, wrap(async (req, res) => {
+  if (!DEMO_MODE) return res.status(403).json({ error: 'Simulacao desabilitada' });
+  const method = req.body.method;
+  if (!['pix', 'cartao'].includes(method)) return res.status(400).json({ error: 'Metodo simulado invalido' });
+  const { data: order, error } = await adminDb.from('orders')
+    .select('id,status,simulated').eq('id', req.params.id).eq('user_id', req.user.id).maybeSingle();
+  if (error) throw error;
+  if (!order) return res.status(404).json({ error: 'Pedido nao encontrado' });
+  if (order.status === 'paid' && order.simulated) return res.json({ status: 'paid', simulated: true });
+  if (order.status !== 'pending') return res.status(409).json({ error: 'Pedido nao esta pendente' });
+  const updated = await adminDb.from('orders')
+    .update({ status: 'paid', simulated: true, payment_method: method })
+    .eq('id', order.id).eq('user_id', req.user.id).eq('status', 'pending')
+    .select('id,status,simulated').maybeSingle();
+  if (updated.error) throw updated.error;
+  if (!updated.data) return res.status(409).json({ error: 'Pedido alterado durante a simulacao' });
+  res.json({ status: 'paid', simulated: true });
+}));
+
+// CUPONS: somente leitura e validacao no navegador; desconto final e sempre recalculado no servidor.
+app.get('/api/coupons/:code', wrap(async (req, res) => {
+  const code = String(req.params.code || '').trim().toUpperCase();
+  if (!/^[A-Z0-9_-]{3,24}$/.test(code)) return res.status(404).json({ error: 'Cupom nao encontrado' });
+  const { data, error } = await adminDb.from('coupons')
+    .select('code,discount_percent,active,expires_at').eq('code', code).maybeSingle();
+  if (error) throw error;
+  if (!data || !data.active || (data.expires_at && Date.parse(data.expires_at) <= Date.now())) {
+    return res.status(404).json({ error: 'Cupom invalido ou expirado' });
+  }
+  res.json({ code: data.code, discountPercent: data.discount_percent });
 }));
 
 // PAGAMENTO MERCADO PAGO
 app.post('/api/orders/:id/payment', user, wrap(async (req, res) => {
+  if (DEMO_MODE) return res.status(403).json({ error: 'Pagamentos reais desabilitados no projeto escolar' });
   if (!process.env.MP_ACCESS_TOKEN) {
     return res.status(503).json({
       error: 'Pagamento ainda nao configurado'
@@ -477,6 +532,87 @@ app.get('/api/admin/orders', user, admin, wrap(async (req, res) => {
   res.json(dbCheck(result));
 }));
 
+// ADMIN: produtos de todas as situacoes, incluindo arquivados.
+app.get('/api/admin/products', user, admin, wrap(async (req, res) => {
+  res.json(dbCheck(await adminDb.from('products').select('*').order('name')));
+}));
+
+// ADMIN: clientes reais do Supabase Auth e contagem de pedidos.
+app.get('/api/admin/customers', user, admin, wrap(async (req, res) => {
+  const profiles = dbCheck(await adminDb.from('profiles').select('id,name,role').order('created_at', { ascending: false }).limit(200));
+  const orders = dbCheck(await adminDb.from('orders').select('user_id').limit(2000));
+  const counts = new Map();
+  orders.forEach(o => counts.set(o.user_id, (counts.get(o.user_id) || 0) + 1));
+  const { data: authUsers, error } = await adminDb.auth.admin.listUsers({ page: 1, perPage: 200 });
+  if (error) throw error;
+  const emails = new Map(authUsers.users.map(u => [u.id, u.email]));
+  res.json(profiles.map(p => ({ id: p.id, name: p.name, role: p.role,
+    email: emails.get(p.id) || '', orders: counts.get(p.id) || 0 })));
+}));
+
+// ADMIN: editar o status das compras escolares (nunca confirma um pagamento real).
+app.patch('/api/admin/orders/:id', user, admin, wrap(async (req, res) => {
+  if (!DEMO_MODE) return res.status(403).json({ error: 'Alteracao manual de status desabilitada' });
+  const status = req.body.status;
+  if (!['pending', 'paid', 'shipped', 'cancelled'].includes(status)) {
+    return res.status(400).json({ error: 'Status invalido' });
+  }
+  const order = dbCheck(await adminDb.from('orders').select('id,status,simulated')
+    .eq('id', req.params.id).maybeSingle());
+  if (!order) return res.status(404).json({ error: 'Pedido nao encontrado' });
+  if (status === 'shipped' && order.status !== 'paid' && order.status !== 'shipped') {
+    return res.status(409).json({ error: 'Somente pedidos pagos/simulados podem ser enviados' });
+  }
+  if (status === 'paid' && !order.simulated) {
+    return res.status(409).json({ error: 'Apenas pedidos com pagamento escolar simulado podem ser marcados como pagos' });
+  }
+  const result = await adminDb.from('orders').update({ status }).eq('id', order.id).select().single();
+  res.json(dbCheck(result));
+}));
+
+// ADMIN: gerenciamento de cupons.
+app.get('/api/admin/coupons', user, admin, wrap(async (req, res) => {
+  res.json(dbCheck(await adminDb.from('coupons').select('*').order('created_at', { ascending: false })));
+}));
+app.post('/api/admin/coupons', user, admin, wrap(async (req, res) => {
+  const code = String(req.body.code || '').trim().toUpperCase();
+  const pct = Number(req.body.discount_percent);
+  if (!/^[A-Z0-9_-]{3,24}$/.test(code) || !Number.isInteger(pct) || pct < 1 || pct > 70) {
+    return res.status(400).json({ error: 'Codigo ou desconto invalido (1 a 70%)' });
+  }
+  const expires = req.body.expires_at || null;
+  if (expires && !Number.isFinite(Date.parse(expires))) return res.status(400).json({ error: 'Validade invalida' });
+  const result = await adminDb.from('coupons')
+    .insert({ code, discount_percent: pct, expires_at: expires, active: true }).select().single();
+  if (result.error?.code === '23505') return res.status(409).json({ error: 'Cupom ja existe' });
+  res.status(201).json(dbCheck(result));
+}));
+app.patch('/api/admin/coupons/:code', user, admin, wrap(async (req, res) => {
+  const fields = {};
+  if ('active' in req.body) {
+    if (typeof req.body.active !== 'boolean') return res.status(400).json({ error: 'Status invalido' });
+    fields.active = req.body.active;
+  }
+  if ('discount_percent' in req.body) {
+    if (!Number.isInteger(req.body.discount_percent) || req.body.discount_percent < 1 || req.body.discount_percent > 70) {
+      return res.status(400).json({ error: 'Desconto deve ser entre 1% e 70%' });
+    }
+    fields.discount_percent = req.body.discount_percent;
+  }
+  if ('expires_at' in req.body) {
+    if (req.body.expires_at !== null && !Number.isFinite(Date.parse(req.body.expires_at))) {
+      return res.status(400).json({ error: 'Data de validade invalida' });
+    }
+    fields.expires_at = req.body.expires_at;
+  }
+  if (!Object.keys(fields).length) return res.status(400).json({ error: 'Nenhuma alteracao enviada' });
+  const result = await adminDb.from('coupons').update(fields)
+    .eq('code', req.params.code.toUpperCase()).select().maybeSingle();
+  const data = dbCheck(result);
+  if (!data) return res.status(404).json({ error: 'Cupom nao encontrado' });
+  res.json(data);
+}));
+
 // ADMIN - CADASTRAR PRODUTO
 app.post('/api/admin/products', user, admin, wrap(async (req, res) => {
   const p = req.body;
@@ -486,6 +622,7 @@ app.post('/api/admin/products', user, admin, wrap(async (req, res) => {
     typeof p.name !== 'string' ||
     !Number.isFinite(p.price) ||
     p.price < 0 ||
+    p.id.length > 60 || !/^[a-zA-Z0-9_-]+$/.test(p.id) ||
     !Number.isInteger(p.stock) ||
     p.stock < 0
   ) {

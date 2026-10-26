@@ -1,68 +1,37 @@
-/* ============================================================
-   GALLERY COFFEE — js/produto.js
-   ------------------------------------------------------------
-   Essa página (produto.html) é sempre a mesma estrutura HTML.
-   Aqui a gente descobre QUAL produto deve aparecer (pelo "?id="
-   que vem na URL, escrito nos links de produtos.html) e troca
-   só os textos e atributos — a estrutura da página continua a
-   mesma, escrita no HTML.
-   ============================================================ */
-
-// pega o "?id=pr1" da URL do navegador
-var parametros = new URLSearchParams(window.location.search);
-var idProduto = parametros.get("id") || "pr1"; // se não vier nada, mostra o pr1
-
-var produto = pegarProdutoPorId(idProduto);
-var colecaoDoProduto = null;
-
-if (produto) {
-  for (var i = 0; i < COLECOES.length; i++) {
-    if (COLECOES[i].id === produto.colecaoId) {
-      colecaoDoProduto = COLECOES[i];
+(async function () {
+  const id = new URLSearchParams(location.search).get('id') || 'pr1';
+  const msg = document.getElementById('produto-erro');
+  const botaoAdicionar = document.getElementById('botao-adicionar-produto');
+  const botaoFav = document.getElementById('botao-favoritar-produto');
+  const botaoComprar = document.getElementById('botao-comprar-agora');
+  [botaoAdicionar, botaoFav, botaoComprar].forEach(b => { if(b) b.disabled = true; });
+  try {
+    const p = await apiRequest('/products/' + encodeURIComponent(id));
+    const colecao = COLECOES.find(c => c.id === p.collection_id);
+    const imagem = gcImagemProduto(p);
+    document.getElementById('produto-nome').textContent = p.name;
+    document.getElementById('produto-preco').textContent = gcMoeda(p.price);
+    document.getElementById('produto-descricao').textContent = p.description || 'Arte em cada detalhe.';
+    document.getElementById('produto-imagem').src = imagem;
+    document.getElementById('produto-imagem').alt = p.name;
+    document.getElementById('produto-colecao').textContent = colecao?.nome || p.collection_id || 'Gallery Coffee';
+    document.getElementById('produto-capacidade').textContent = p.capacity || '—';
+    document.getElementById('produto-material').textContent = p.material || '—';
+    document.getElementById('produto-dimensoes').textContent = p.dimensions || '—';
+    document.getElementById('produto-cuidados').textContent = p.care || '—';
+    document.getElementById('produto-estoque').textContent = p.stock > 0 ? `${p.stock} unidades disponíveis` : 'Esgotado';
+    [botaoAdicionar, botaoFav].forEach(botao => {
+      if (!botao) return;
+      Object.assign(botao.dataset, { id:p.id, nome:p.name, preco:p.price, imagem });
+    });
+    if (botaoAdicionar) { botaoAdicionar.disabled = p.stock <= 0; if(p.stock<=0) botaoAdicionar.textContent='Esgotado'; }
+    if (botaoFav) { botaoFav.disabled = false; botaoFav.textContent = produtoEstaFavoritado(p.id) ? '♥ Favoritado' : '♡ Favoritar'; }
+    if (botaoComprar) {
+      botaoComprar.disabled = p.stock <= 0;
+      botaoComprar.addEventListener('click', () => {
+        adicionarAoCarrinho(p.id,p.name,Number(p.price),imagem);
+        location.href = 'carrinho.html';
+      });
     }
-  }
-
-  document.getElementById("produto-nome").textContent = produto.nome;
-  document.getElementById("produto-preco").textContent = formatarPreco(produto.preco);
-  document.getElementById("produto-descricao").textContent = produto.descricao;
-  document.getElementById("produto-imagem").setAttribute("src", colecaoDoProduto.imagem);
-  document.getElementById("produto-imagem").setAttribute("alt", produto.nome);
-
-  document.getElementById("produto-colecao").textContent = colecaoDoProduto.nome;
-  document.getElementById("produto-capacidade").textContent = produto.capacidade;
-  document.getElementById("produto-material").textContent = produto.material;
-  document.getElementById("produto-dimensoes").textContent = produto.dimensoes;
-  document.getElementById("produto-cuidados").textContent = produto.cuidados;
-  document.getElementById("produto-estoque").textContent =
-    produto.estoque > 0 ? (produto.estoque + " unidades disponíveis") : "Esgotado";
-
-  // atualiza os atributos data-* dos botões, para eles adicionarem
-  // o produto CERTO ao carrinho/favoritos (e não sempre o pr1)
-  var botaoAdicionar = document.getElementById("botao-adicionar-produto");
-  var botaoFavoritar = document.getElementById("botao-favoritar-produto");
-
-  [botaoAdicionar, botaoFavoritar].forEach(function (botao) {
-    botao.setAttribute("data-id", produto.id);
-    botao.setAttribute("data-nome", produto.nome);
-    botao.setAttribute("data-preco", produto.preco);
-    botao.setAttribute("data-imagem", colecaoDoProduto.imagem);
-  });
-
-  if (produto.estoque === 0) {
-    botaoAdicionar.disabled = true;
-    botaoAdicionar.textContent = "Esgotado";
-  }
-
-  if (produtoEstaFavoritado(produto.id)) {
-    botaoFavoritar.textContent = "♥ Favoritado";
-  }
-}
-
-// botão "Comprar agora": adiciona ao carrinho e já vai direto pro carrinho
-var botaoComprarAgora = document.getElementById("botao-comprar-agora");
-botaoComprarAgora.addEventListener("click", function () {
-  if (produto) {
-    adicionarAoCarrinho(produto.id, produto.nome, produto.preco, colecaoDoProduto.imagem);
-  }
-  window.location.href = "carrinho.html";
-});
+  } catch (e) { if(msg) gcAviso(msg, e.message, true); }
+})();
