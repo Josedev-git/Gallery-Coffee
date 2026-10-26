@@ -229,19 +229,56 @@ app.post('/api/auth/login', wrap(async (req, res) => {
   });
 }));
 
-// RECUPERAR SENHA
+// RECUPERAR SENHA: email do Supabase deve abrir a pagina dedicada
 app.post('/api/auth/recover', wrap(async (req, res) => {
-  if (typeof req.body.email !== 'string') {
-    return res.status(400).json({
-      error: 'Email obrigatorio'
+  const email = typeof req.body?.email === 'string' ? req.body.email.trim() : '';
+
+  if (!email || email.length > 254) {
+    return res.status(400).json({ error: 'Email obrigatorio' });
+  }
+
+  // FRONTEND_ORIGIN ja esta configurado no Render para o InfinityFree.
+  // Como pode receber varias origens separadas por virgula, usamos a primeira.
+  const redirectTo = allowedOrigins[0] + '/redefinir-senha.html';
+
+  const { error } = await authDb.auth.resetPasswordForEmail(email, { redirectTo });
+
+  if (error) {
+    console.error('Falha ao solicitar recuperacao:', error.code || error.message);
+    const limite = Number(error.status) === 429 || /rate.?limit/i.test(error.code || '');
+    return res.status(limite ? 429 : 502).json({
+      error: limite
+        ? 'Limite de emails atingido. Tente novamente mais tarde.'
+        : 'Nao foi possivel enviar o email agora. Tente novamente mais tarde.'
     });
   }
 
-  await authDb.auth.resetPasswordForEmail(req.body.email);
+  // Resposta neutra: nao informa se a conta existe no Supabase.
+  res.json({ message: 'Se o email existir, voce recebera instrucoes' });
+}));
 
-  res.json({
-    message: 'Se o email existir, voce recebera instrucoes'
-  });
+// SALVAR NOVA SENHA: a sessao temporaria do link e validada no middleware user.
+// Nenhuma chave privada do Supabase vai para o navegador.
+app.post('/api/auth/reset-password', user, wrap(async (req, res) => {
+  const password = req.body?.password;
+
+  if (typeof password !== 'string' || password.length < 8 || password.length > 72) {
+    return res.status(400).json({
+      error: 'A nova senha deve ter entre 8 e 72 caracteres.'
+    });
+  }
+
+  // Atualiza somente o usuario identificado pelo token validado por getUser().
+  const { error } = await adminDb.auth.admin.updateUserById(req.user.id, { password });
+
+  if (error) {
+    console.error('Falha ao redefinir senha:', error.code || error.message);
+    return res.status(400).json({
+      error: 'Nao foi possivel atualizar a senha. Solicite outro link e tente novamente.'
+    });
+  }
+
+  res.json({ message: 'Senha redefinida com sucesso' });
 }));
 
 // PERFIL
@@ -563,10 +600,14 @@ app.patch('/api/admin/orders/:id', user, admin, wrap(async (req, res) => {
   if (status === 'shipped' && order.status !== 'paid' && order.status !== 'shipped') {
     return res.status(409).json({ error: 'Somente pedidos pagos/simulados podem ser enviados' });
   }
+  // Somente no ambiente escolar: marcar um pedido antigo como pago
+  // significa registrar uma CONFIRMACAO SIMULADA, nunca pagamento real.
+  const changes = { status };
   if (status === 'paid' && !order.simulated) {
-    return res.status(409).json({ error: 'Apenas pedidos com pagamento escolar simulado podem ser marcados como pagos' });
+    changes.simulated = true;
+    changes.payment_method = 'admin_demo';
   }
-  const result = await adminDb.from('orders').update({ status }).eq('id', order.id).select().single();
+  const result = await adminDb.from('orders').update(changes).eq('id', order.id).select().single();
   res.json(dbCheck(result));
 }));
 
